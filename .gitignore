@@ -1,0 +1,13 @@
+# Editor / local config
+.claude/
+.vscode/
+.idea/
+
+# macOS
+.DS_Store
+
+# Vercel
+.vercel/
+
+# Dependencies
+node_modules/

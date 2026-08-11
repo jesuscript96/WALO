@@ -1,0 +1,249 @@
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>WALO — Lighting Design Studio</title>
+<meta name="description" content="WALO — Lighting design studio. Lighting as architecture. Madrid, toward Europe." />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="styles.css" />
+<script>document.documentElement.className += " js";</script>
+
+<!-- ============================================================
+     WALO · Landing page
+     Placeholders a sustituir por material real:
+       · Imágenes de proyecto (.tile__media → foto real)
+       · Nombres de proyecto / lugar / año en la galería y el índice
+       · Email y datos de contacto
+     ============================================================ -->
+
+<!-- Grano filmico global -->
+<div class="grain" aria-hidden="true"></div>
+
+<!-- Intro -->
+<div class="intro" id="intro" aria-hidden="true">
+  <span class="intro__mark">
+    <span class="intro__letters">WAL</span><span class="intro__o"></span>
+  </span>
+</div>
+
+<!-- Header -->
+<header class="site-header" id="header">
+  <a class="wordmark wordmark--sm" href="#top" aria-label="WALO, inicio">
+    <span class="wm-letters">WAL</span><span class="wm-o" aria-hidden="true"></span>
+  </a>
+  <nav class="nav" aria-label="Principal">
+    <a href="#work">Work</a>
+    <a href="#studio">Studio</a>
+    <a href="#approach">Approach</a>
+    <a href="#contact">Contact</a>
+  </nav>
+</header>
+
+<main id="top">
+
+  <!-- ============ HERO ============ -->
+  <section class="hero section" data-theme="dark">
+    <div class="eclipse" aria-hidden="true"><span class="eclipse__disc"></span></div>
+    <div class="hero__inner">
+      <p class="kicker reveal">WALO · Lighting Design Studio</p>
+      <h1 class="hero__title reveal">
+        <span>Lighting</span>
+        <span>as</span>
+        <span>architecture<span class="dot">.</span></span>
+      </h1>
+    </div>
+    <div class="hero__foot">
+      <span class="mono">WALO · Madrid</span>
+      <a class="mono scroll-cue" href="#work">↓ Explorar</a>
+    </div>
+  </section>
+
+  <!-- ============ GALLERY (falling images) ============ -->
+  <section class="work section" id="work" data-theme="light">
+    <div class="section-head">
+      <span class="mono index">01 — Selected work</span>
+      <span class="mono muted">Architectural lighting · 2022—2025</span>
+    </div>
+
+    <!-- Imágenes: placeholders de Unsplash (uso libre) a sustituir por obra real de WALO -->
+    <div class="gallery">
+      <figure class="tile" data-speed="0.05" data-drift="-0.03" style="--col:2;--span:5;--mt:2vh;--ar:3/4;" aria-label="Proyecto: Museo — Ampliación, Madrid, 2025">
+        <div class="tile__media"><img src="assets/images/walo-07.jpg" alt="Torre de hormigón iluminada desde abajo" loading="lazy" /></div>
+        <figcaption class="tile__cap">
+          <span class="mono num">01</span>
+          <span class="cap-main">Museo — Ampliación</span>
+          <span class="mono muted">Madrid · 2025</span>
+        </figcaption>
+      </figure>
+
+      <figure class="tile" data-speed="0.20" data-drift="0.05" style="--col:8;--span:4;--mt:26vh;--ar:4/3;" aria-label="Proyecto: Bodega Ribera, Burgos, 2024">
+        <div class="tile__media"><img src="assets/images/walo-12.jpg" alt="Fachada curva con bandas horizontales de luz" loading="lazy" /></div>
+        <figcaption class="tile__cap">
+          <span class="mono num">02</span>
+          <span class="cap-main">Bodega Ribera</span>
+          <span class="mono muted">Burgos · 2024</span>
+        </figcaption>
+      </figure>
+
+      <figure class="tile" data-speed="0.11" data-drift="-0.05" style="--col:3;--span:4;--mt:14vh;--ar:1/1;" aria-label="Proyecto: Casa del Faro, Girona, 2024">
+        <div class="tile__media"><img src="assets/images/walo-09.jpg" alt="Edificio blanco con ventanas de luz cálida al anochecer" loading="lazy" /></div>
+        <figcaption class="tile__cap">
+          <span class="mono num">03</span>
+          <span class="cap-main">Casa del Faro</span>
+          <span class="mono muted">Girona · 2024</span>
+        </figcaption>
+      </figure>
+
+      <figure class="tile" data-speed="0.04" data-drift="0.03" style="--col:8;--span:5;--mt:6vh;--ar:3/4;" aria-label="Proyecto: Convento, Toledo, 2023">
+        <div class="tile__media"><img src="assets/images/walo-03.jpg" alt="Fachada histórica iluminada de noche" loading="lazy" /></div>
+        <figcaption class="tile__cap">
+          <span class="mono num">04</span>
+          <span class="cap-main">Convento</span>
+          <span class="mono muted">Toledo · 2023</span>
+        </figcaption>
+      </figure>
+
+      <figure class="tile" data-speed="0.17" data-drift="-0.04" style="--col:2;--span:4;--mt:16vh;--ar:4/3;" aria-label="Proyecto: Fundación Marso, Barcelona, 2023">
+        <div class="tile__media"><img src="assets/images/walo-01.jpg" alt="Retícula de ventanas iluminadas en una fachada nocturna" loading="lazy" /></div>
+        <figcaption class="tile__cap">
+          <span class="mono num">05</span>
+          <span class="cap-main">Fundación Marso</span>
+          <span class="mono muted">Barcelona · 2023</span>
+        </figcaption>
+      </figure>
+
+      <figure class="tile" data-speed="0.08" data-drift="0.06" style="--col:7;--span:5;--mt:4vh;--ar:4/3;" aria-label="Proyecto: Pabellón EXPO, Lisboa, 2023">
+        <div class="tile__media"><img src="assets/images/walo-08.jpg" alt="Esquina de edificio de vidrio con línea de luz de color" loading="lazy" /></div>
+        <figcaption class="tile__cap">
+          <span class="mono num">06</span>
+          <span class="cap-main">Pabellón EXPO</span>
+          <span class="mono muted">Lisboa · 2023</span>
+        </figcaption>
+      </figure>
+
+      <figure class="tile" data-speed="0.14" data-drift="-0.06" style="--col:3;--span:4;--mt:18vh;--ar:3/4;" aria-label="Proyecto: Torre Norte, Madrid, 2022">
+        <div class="tile__media"><img src="assets/images/walo-13.jpg" alt="Fachada geométrica con iluminación interior cálida" loading="lazy" /></div>
+        <figcaption class="tile__cap">
+          <span class="mono num">07</span>
+          <span class="cap-main">Torre Norte</span>
+          <span class="mono muted">Madrid · 2022</span>
+        </figcaption>
+      </figure>
+
+      <figure class="tile" data-speed="0.22" data-drift="0.04" style="--col:8;--span:4;--mt:10vh;--ar:1/1;" aria-label="Proyecto: Sede Norte, Madrid, 2022">
+        <div class="tile__media"><img src="assets/images/walo-10.jpg" alt="Torre de oficinas de noche con ventanas encendidas" loading="lazy" /></div>
+        <figcaption class="tile__cap">
+          <span class="mono num">08</span>
+          <span class="cap-main">Sede Norte</span>
+          <span class="mono muted">Madrid · 2022</span>
+        </figcaption>
+      </figure>
+
+      <figure class="tile" data-speed="0.06" data-drift="-0.03" style="--col:4;--span:5;--mt:14vh;--ar:4/3;" aria-label="Proyecto: Capilla del Agua, Girona, 2022">
+        <div class="tile__media"><img src="assets/images/walo-02.jpg" alt="Torre oscura mínima con pocas ventanas iluminadas" loading="lazy" /></div>
+        <figcaption class="tile__cap">
+          <span class="mono num">09</span>
+          <span class="cap-main">Capilla del Agua</span>
+          <span class="mono muted">Girona · 2022</span>
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- ============ APPROACH (manifesto) ============ -->
+  <section class="approach section" id="approach" data-theme="light">
+    <div class="section-head">
+      <span class="mono index">02 — Approach</span>
+    </div>
+    <div class="approach__inner">
+      <h2 class="statement reveal">
+        We treat light as a building material — shaping how architecture
+        is read at night<span class="dot">.</span>
+      </h2>
+      <div class="approach__cols">
+        <p class="reveal">WALO is a lighting design studio based in Madrid, working across
+          Europe. We design the light that reveals structure, material and
+          atmosphere — from the first concept to the last fixture on site.</p>
+        <ul class="disciplines mono reveal">
+          <li>Architectural lighting</li>
+          <li>Concept &amp; masterplanning</li>
+          <li>Technical design</li>
+          <li>On-site commissioning</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ WORK INDEX ============ -->
+  <section class="index-list section" id="studio" data-theme="light">
+    <div class="section-head">
+      <span class="mono index">03 — Index</span>
+      <span class="mono muted">Selected · 07</span>
+    </div>
+    <ol class="rows">
+      <li class="row"><span class="mono num">01</span><span class="row__name">Museo — Ampliación</span><span class="mono row__type">Cultural</span><span class="mono row__place">Madrid</span><span class="mono row__year">2025</span></li>
+      <li class="row"><span class="mono num">02</span><span class="row__name">Bodega Ribera</span><span class="mono row__type">Industrial</span><span class="mono row__place">Burgos</span><span class="mono row__year">2024</span></li>
+      <li class="row"><span class="mono num">03</span><span class="row__name">Convento</span><span class="mono row__type">Heritage</span><span class="mono row__place">Toledo</span><span class="mono row__year">2024</span></li>
+      <li class="row"><span class="mono num">04</span><span class="row__name">Pabellón EXPO</span><span class="mono row__type">Public</span><span class="mono row__place">Lisboa</span><span class="mono row__year">2023</span></li>
+      <li class="row"><span class="mono num">05</span><span class="row__name">Fundación Marso</span><span class="mono row__type">Cultural</span><span class="mono row__place">Barcelona</span><span class="mono row__year">2023</span></li>
+      <li class="row"><span class="mono num">06</span><span class="row__name">Torre Norte</span><span class="mono row__type">Office</span><span class="mono row__place">Madrid</span><span class="mono row__year">2022</span></li>
+      <li class="row"><span class="mono num">07</span><span class="row__name">Capilla del Agua</span><span class="mono row__type">Religious</span><span class="mono row__place">Girona</span><span class="mono row__year">2022</span></li>
+    </ol>
+  </section>
+
+  <!-- ============ O AS SYSTEM ============ -->
+  <section class="system section" data-theme="dark">
+    <div class="section-head">
+      <span class="mono index">04 — The O as system</span>
+    </div>
+    <div class="system__inner">
+      <div class="system__stage">
+        <button class="odevice" id="odevice" data-mode="sol" aria-label="Alternar entre sol y eclipse">
+          <span class="odevice__sol"></span>
+          <span class="odevice__ring"></span>
+        </button>
+      </div>
+      <div class="system__copy">
+        <h2 class="statement reveal">The same idea — the “O” as device — in two modes<span class="dot">.</span></h2>
+        <p class="mono muted reveal">Sol · solid · daylight &nbsp;/&nbsp; Eclipse · aperture · night</p>
+        <p class="reveal">One mark, two states. The circle that closes the name becomes a
+          sun by day and an eclipse by night — the studio&rsquo;s signal for light itself.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CONTACT ============ -->
+  <section class="contact section" id="contact" data-theme="dark">
+    <div class="contact__lockup">
+      <span class="wordmark wordmark--xl">
+        <span class="wm-letters">WAL</span><span class="wm-o wm-o--sol" aria-hidden="true"></span>
+      </span>
+      <span class="mono lockup__sub">Lighting Design Studio</span>
+    </div>
+
+    <div class="contact__grid">
+      <div class="contact__col">
+        <span class="mono muted">Start a project</span>
+        <a class="contact__link" href="mailto:hola@walo.studio">hola@walo.studio</a>
+      </div>
+      <div class="contact__col">
+        <span class="mono muted">Studio</span>
+        <p class="contact__addr">Madrid, ES<br />Working across Europe</p>
+      </div>
+      <div class="contact__col">
+        <span class="mono muted">Follow</span>
+        <p class="contact__addr"><a href="#">Instagram</a><br /><a href="#">LinkedIn</a></p>
+      </div>
+    </div>
+
+    <div class="contact__foot mono muted">
+      <span>© 2026 WALO</span>
+      <span>Iluminamos arquitectura desde Madrid hacia Europa</span>
+      <span>V1</span>
+    </div>
+  </section>
+
+</main>
+
+<script src="main.js"></script>
