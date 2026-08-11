@@ -63,9 +63,8 @@ figure{ margin:0; }        /* reset del margen por defecto del navegador (1em 40
 
 .section{
   position:relative;
+  width:100%;
   padding:clamp(72px,12vh,160px) var(--pad);
-  max-width:var(--maxw);
-  margin-inline:auto;
 }
 
 .section-head{
