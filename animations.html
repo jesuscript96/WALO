@@ -1,0 +1,155 @@
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>WALO — El Ciclo de la Luz (sandbox)</title>
+<meta name="robots" content="noindex" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="styles.css" />
+<link rel="stylesheet" href="animations.css" />
+
+<!-- GSAP + ScrollTrigger (CDN) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+<script>document.documentElement.className += " js";</script>
+
+<!--
+  SANDBOX · "El Ciclo de la Luz"
+  La O recorre la página al hacer scroll: Sol → Lente (difference) → Eclipse → snap al footer.
+  Variante día(light)→noche(dark) para servir a la narrativa de marca.
+-->
+
+<!-- Overlay sticky: la O como dispositivo (fixed, no afecta al layout) -->
+<div class="light-cycle" aria-hidden="true">
+  <div class="lc-cone"></div>
+  <div class="lc-o">
+    <div class="lc-disc"></div>
+    <div class="lc-ring"></div>
+  </div>
+</div>
+
+<header class="site-header">
+  <a class="wordmark wordmark--sm" href="/" aria-label="WALO, inicio">
+    <span class="wm-letters">WAL</span><span class="wm-o" aria-hidden="true"></span>
+  </a>
+  <nav class="nav">
+    <a href="/">← Index</a>
+    <span class="mono" style="color:#fff;opacity:.5">Sandbox · Ciclo de la Luz</span>
+  </nav>
+</header>
+
+<!-- Indicador de fase del ciclo (editorial) -->
+<div class="cycle-indicator mono" aria-hidden="true">
+  <span class="ci-phase" data-phase="sol">01 — Sol</span>
+  <span class="ci-phase" data-phase="lens">02 — Lens</span>
+  <span class="ci-phase" data-phase="eclipse">03 — Eclipse</span>
+</div>
+
+<main id="top">
+
+  <!-- ============ HERO · DÍA · SOL ============ -->
+  <section class="sc sc--hero section" data-theme="light">
+    <p class="kicker">WALO · Lighting Design Studio</p>
+    <h1 class="hero__title">
+      <span>Lighting</span>
+      <span>as</span>
+      <span>architecture<span class="dot">.</span></span>
+    </h1>
+    <div class="hero__foot">
+      <span class="mono">WALO · Madrid</span>
+      <span class="mono" style="opacity:.5">↓ scroll para vivir el ciclo</span>
+    </div>
+  </section>
+
+  <!-- ============ GALLERY · LENTE ============ -->
+  <section class="sc sc--work section" id="work" data-theme="light">
+    <div class="section-head">
+      <span class="mono index">02 — Selected work</span>
+      <span class="mono muted">La O actúa como diafragma · blend: difference</span>
+    </div>
+    <div class="gallery">
+      <figure class="tile" style="--col:2;--span:5;--mt:2vh;--ar:3/4;">
+        <div class="tile__media"><img src="assets/images/walo-07.jpg" alt="" loading="lazy" /></div>
+        <figcaption class="tile__cap"><span class="mono num">01</span><span class="cap-main">Museo — Ampliación</span><span class="mono muted">Madrid · 2025</span></figcaption>
+      </figure>
+      <figure class="tile" style="--col:8;--span:4;--mt:26vh;--ar:4/3;">
+        <div class="tile__media"><img src="assets/images/walo-12.jpg" alt="" loading="lazy" /></div>
+        <figcaption class="tile__cap"><span class="mono num">02</span><span class="cap-main">Bodega Ribera</span><span class="mono muted">Burgos · 2024</span></figcaption>
+      </figure>
+      <figure class="tile" style="--col:3;--span:4;--mt:14vh;--ar:1/1;">
+        <div class="tile__media"><img src="assets/images/walo-09.jpg" alt="" loading="lazy" /></div>
+        <figcaption class="tile__cap"><span class="mono num">03</span><span class="cap-main">Casa del Faro</span><span class="mono muted">Girona · 2024</span></figcaption>
+      </figure>
+      <figure class="tile" style="--col:8;--span:5;--mt:6vh;--ar:3/4;">
+        <div class="tile__media"><img src="assets/images/walo-03.jpg" alt="" loading="lazy" /></div>
+        <figcaption class="tile__cap"><span class="mono num">04</span><span class="cap-main">Convento</span><span class="mono muted">Toledo · 2023</span></figcaption>
+      </figure>
+      <figure class="tile" style="--col:2;--span:4;--mt:16vh;--ar:4/3;">
+        <div class="tile__media"><img src="assets/images/walo-01.jpg" alt="" loading="lazy" /></div>
+        <figcaption class="tile__cap"><span class="mono num">05</span><span class="cap-main">Fundación Marso</span><span class="mono muted">Barcelona · 2023</span></figcaption>
+      </figure>
+      <figure class="tile" style="--col:7;--span:5;--mt:4vh;--ar:4/3;">
+        <div class="tile__media"><img src="assets/images/walo-13.jpg" alt="" loading="lazy" /></div>
+        <figcaption class="tile__cap"><span class="mono num">06</span><span class="cap-main">Torre Norte</span><span class="mono muted">Madrid · 2022</span></figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- ============ APPROACH · DÍA ============ -->
+  <section class="sc sc--approach section" id="approach" data-theme="light">
+    <div class="section-head">
+      <span class="mono index">03 — Approach</span>
+    </div>
+    <h2 class="statement reveal">
+      We treat light as a building material — shaping how architecture
+      is read at night<span class="dot">.</span>
+    </h2>
+    <div class="approach__cols">
+      <p class="reveal">WALO is a lighting design studio based in Madrid, working across Europe.
+        We design the light that reveals structure, material and atmosphere — from the
+        first concept to the last fixture on site.</p>
+      <ul class="disciplines mono reveal">
+        <li>Architectural lighting</li>
+        <li>Concept &amp; masterplanning</li>
+        <li>Technical design</li>
+        <li>On-site commissioning</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ============ SYSTEM · NOCHE · ECLIPSE ============ -->
+  <section class="sc sc--system section" id="system" data-theme="dark">
+    <div class="section-head">
+      <span class="mono index">04 — The O as system</span>
+      <span class="mono muted">Noche · el disco se abre en anillo</span>
+    </div>
+    <div class="system__inner">
+      <div class="system__copy">
+        <h2 class="statement reveal">The same idea — the “O” as device — in two modes<span class="dot">.</span></h2>
+        <p class="mono muted reveal">Sol · solid · daylight &nbsp;/&nbsp; Eclipse · aperture · night</p>
+        <p class="reveal">One mark, two states. The circle that closes the name becomes a
+          sun by day and an eclipse by night — the studio&rsquo;s signal for light itself.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FOOTER · CIERRE (objetivo de la O) ============ -->
+  <footer class="sc sc--footer" id="footer" data-theme="dark">
+    <div class="contact__lockup">
+      <span class="wordmark wordmark--xl">
+        <span class="wm-letters">WAL</span><span class="wm-o wm-o--eclipse footer-o" aria-hidden="true"></span>
+      </span>
+      <span class="mono lockup__sub">Lighting Design Studio</span>
+    </div>
+    <div class="contact__foot mono muted">
+      <span>05 — Eclipse encajado en el cierre</span>
+      <span>Fin del ciclo</span>
+      <span>Sandbox</span>
+    </div>
+  </footer>
+
+</main>
+
+<script src="animations.js"></script>

@@ -1,0 +1,200 @@
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>WALO — De la fotometría a la realidad</title>
+<meta name="robots" content="noindex" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="styles.css" />
+<link rel="stylesheet" href="photometry.css" />
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script>document.documentElement.className += " js";</script>
+
+<!--
+  PHOTOMETRY v2 · "De la fotometría a la realidad"
+  Hero sticky: los primeros px de scroll dibujan las luminarias y encienden el circuito.
+  IES sticky: la curva despliega y florece. Galería: cada foto se enciende al cruzar el centro.
+  Footer: el haz colapsa en el LED.
+-->
+
+<!-- Overlays fijos: haz volumétrico + burst del LED -->
+<div class="pm-beam" aria-hidden="true"></div>
+<div class="pm-burst" aria-hidden="true"></div>
+
+<header class="site-header">
+  <a class="wordmark wordmark--sm" href="/" aria-label="WALO, inicio">
+    <span class="wm-letters">WAL</span><span class="wm-o" aria-hidden="true"></span>
+  </a>
+  <nav class="nav">
+    <a href="/">← Index</a>
+    <span class="mono" style="color:#fff;opacity:.5">Sandbox · Fotometría</span>
+  </nav>
+</header>
+
+<main id="top">
+
+  <!-- ============ 01 · HERO STICKY (dibuja + enciende con el scroll) ============ -->
+  <div class="pm-pinwrap" id="pm-hero-wrap">
+    <section class="pm pm--hero" data-theme="dark">
+      <div class="pm-hero-top">
+        <p class="kicker">WALO · Lighting Design Studio</p>
+        <h1 class="pm-title">De la fotometría<br />a la realidad<span class="dot">.</span></h1>
+      </div>
+
+      <div class="pm-hero-stage">
+        <!-- defs compartidos (gradientes cálidos del haz y la piscina de luz) -->
+        <svg width="0" height="0" class="pm-defs" aria-hidden="true">
+          <defs>
+            <linearGradient id="pmBeam" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%"   stop-color="#ffe6ad" stop-opacity="0.85" />
+              <stop offset="100%" stop-color="#ffce8a" stop-opacity="0" />
+            </linearGradient>
+            <radialGradient id="pmPool">
+              <stop offset="0%"   stop-color="#ffe6ad" stop-opacity="0.8" />
+              <stop offset="100%" stop-color="#ffce8a" stop-opacity="0" />
+            </radialGradient>
+          </defs>
+        </svg>
+
+        <div class="pm-lamps">
+          <!-- 1 · DOWNLIGHT -->
+          <div class="pm-lamp" data-lamp="1">
+            <svg viewBox="0 0 200 260" aria-hidden="true">
+              <line class="pm-fix" x1="20" y1="34" x2="180" y2="34" />
+              <rect class="pm-fix" x="86" y="29" width="28" height="11" rx="2" />
+              <polygon class="pm-glow" points="100,40 64,228 136,228" fill="url(#pmBeam)" />
+              <ellipse class="pm-pool" cx="100" cy="230" rx="50" ry="9" fill="url(#pmPool)" />
+              <text class="pm-label" x="100" y="254" text-anchor="middle">DOWNLIGHT</text>
+            </svg>
+          </div>
+          <!-- 2 · PROYECTOR -->
+          <div class="pm-lamp" data-lamp="2">
+            <svg viewBox="0 0 200 260" aria-hidden="true">
+              <line class="pm-fix" x1="20" y1="34" x2="180" y2="34" />
+              <circle class="pm-fix" cx="132" cy="44" r="11" />
+              <line class="pm-fix" x1="132" y1="34" x2="132" y2="40" />
+              <polygon class="pm-glow" points="130,52 52,228 122,228" fill="url(#pmBeam)" />
+              <ellipse class="pm-pool" cx="86" cy="230" rx="44" ry="9" fill="url(#pmPool)" />
+              <text class="pm-label" x="100" y="254" text-anchor="middle">PROYECTOR</text>
+            </svg>
+          </div>
+          <!-- 3 · LINEAL -->
+          <div class="pm-lamp" data-lamp="3">
+            <svg viewBox="0 0 200 260" aria-hidden="true">
+              <line class="pm-fix" x1="20" y1="34" x2="180" y2="34" />
+              <rect class="pm-fix" x="46" y="36" width="108" height="10" rx="2" />
+              <rect class="pm-glow" x="52" y="48" width="96" height="182" fill="url(#pmBeam)" />
+              <ellipse class="pm-pool" cx="100" cy="230" rx="60" ry="9" fill="url(#pmPool)" />
+              <text class="pm-label" x="100" y="254" text-anchor="middle">LINEAL</text>
+            </svg>
+          </div>
+          <!-- 4 · PÉNDULO -->
+          <div class="pm-lamp" data-lamp="4">
+            <svg viewBox="0 0 200 260" aria-hidden="true">
+              <line class="pm-fix" x1="20" y1="34" x2="180" y2="34" />
+              <line class="pm-fix" x1="100" y1="34" x2="100" y2="90" />
+              <path class="pm-fix" d="M78 90 Q100 118 122 90 Z" />
+              <polygon class="pm-glow" points="100,104 70,228 130,228" fill="url(#pmBeam)" />
+              <ellipse class="pm-pool" cx="100" cy="230" rx="48" ry="9" fill="url(#pmPool)" />
+              <text class="pm-label" x="100" y="254" text-anchor="middle">PENDANT</text>
+            </svg>
+          </div>
+          <!-- 5 · WALL-WASHER -->
+          <div class="pm-lamp" data-lamp="5">
+            <svg viewBox="0 0 200 260" aria-hidden="true">
+              <line class="pm-fix" x1="20" y1="34" x2="180" y2="34" />
+              <rect class="pm-fix" x="70" y="34" width="26" height="12" />
+              <line class="pm-fix" x1="160" y1="34" x2="160" y2="232" />
+              <rect class="pm-glow" x="128" y="34" width="32" height="198" fill="url(#pmBeam)" />
+              <ellipse class="pm-pool" cx="160" cy="230" rx="26" ry="8" fill="url(#pmPool)" />
+              <text class="pm-label" x="100" y="254" text-anchor="middle">WALL-WASHER</text>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <div class="pm-hero-foot">
+        <span class="mono">01 — Familia de luminarias</span>
+        <span class="mono" style="opacity:.5">↓ scroll para encender</span>
+      </div>
+    </section>
+  </div>
+
+  <!-- ============ 02 · CURVA IES STICKY (despliega + florece) ============ -->
+  <div class="pm-pinwrap" id="pm-ies-wrap">
+    <section class="pm pm--ies" data-theme="dark">
+      <div class="section-head">
+        <span class="mono index">02 — Curva fotométrica IES</span>
+        <span class="mono muted">De la matemática a la luz física</span>
+      </div>
+      <div class="pm-ies-stage" aria-hidden="true">
+        <svg viewBox="0 0 600 600" preserveAspectRatio="xMidYMid meet">
+          <g class="pm-grid">
+            <circle pathLength="1" cx="300" cy="300" r="60"  />
+            <circle pathLength="1" cx="300" cy="300" r="120" />
+            <circle pathLength="1" cx="300" cy="300" r="180" />
+            <circle pathLength="1" cx="300" cy="300" r="240" />
+            <line pathLength="1" x1="300" y1="40"  x2="300" y2="560" />
+            <line pathLength="1" x1="40"  y1="300" x2="560" y2="300" />
+            <line pathLength="1" x1="128" y1="128" x2="472" y2="472" />
+            <line pathLength="1" x1="472" y1="128" x2="128" y2="472" />
+          </g>
+          <path class="pm-curve" pathLength="1" d="M300 90 C 430 130, 470 250, 430 360 C 410 430, 350 482, 300 470 C 250 482, 190 430, 170 360 C 130 250, 170 130, 300 90 Z" />
+          <circle class="pm-coredot" cx="300" cy="300" r="5" />
+          <text class="pm-label" x="300" y="32">0°</text>
+          <text class="pm-label" x="552" y="304">90°</text>
+          <text class="pm-label" x="282" y="588">cd / klm</text>
+        </svg>
+      </div>
+    </section>
+  </div>
+
+  <!-- ============ 03 · WORK · reveal por brillo (wall-washing) ============ -->
+  <section class="pm pm--work section" id="pm-work" data-theme="dark">
+    <div class="section-head">
+      <span class="mono index">03 — Selected work · wall-washing</span>
+      <span class="mono muted">Cada foto se enciende al cruzar la luz</span>
+    </div>
+    <div class="gallery">
+      <figure class="tile" style="--col:2;--span:5;--mt:2vh;--ar:3/4;">
+        <div class="tile__media"><img src="assets/images/walo-07.jpg" alt="" loading="lazy" /></div>
+        <figcaption class="tile__cap"><span class="mono num">01</span><span class="cap-main">Museo — Ampliación</span><span class="mono muted">Madrid · 2025</span></figcaption>
+      </figure>
+      <figure class="tile" style="--col:8;--span:4;--mt:26vh;--ar:4/3;">
+        <div class="tile__media"><img src="assets/images/walo-12.jpg" alt="" loading="lazy" /></div>
+        <figcaption class="tile__cap"><span class="mono num">02</span><span class="cap-main">Bodega Ribera</span><span class="mono muted">Burgos · 2024</span></figcaption>
+      </figure>
+      <figure class="tile" style="--col:3;--span:4;--mt:14vh;--ar:1/1;">
+        <div class="tile__media"><img src="assets/images/walo-09.jpg" alt="" loading="lazy" /></div>
+        <figcaption class="tile__cap"><span class="mono num">03</span><span class="cap-main">Casa del Faro</span><span class="mono muted">Girona · 2024</span></figcaption>
+      </figure>
+      <figure class="tile" style="--col:8;--span:5;--mt:6vh;--ar:3/4;">
+        <div class="tile__media"><img src="assets/images/walo-03.jpg" alt="" loading="lazy" /></div>
+        <figcaption class="tile__cap"><span class="mono num">04</span><span class="cap-main">Convento</span><span class="mono muted">Toledo · 2023</span></figcaption>
+      </figure>
+      <figure class="tile" style="--col:2;--span:4;--mt:16vh;--ar:4/3;">
+        <div class="tile__media"><img src="assets/images/walo-01.jpg" alt="" loading="lazy" /></div>
+        <figcaption class="tile__cap"><span class="mono num">05</span><span class="cap-main">Fundación Marso</span><span class="mono muted">Barcelona · 2023</span></figcaption>
+      </figure>
+      <figure class="tile" style="--col:7;--span:5;--mt:4vh;--ar:4/3;">
+        <div class="tile__media"><img src="assets/images/walo-13.jpg" alt="" loading="lazy" /></div>
+        <figcaption class="tile__cap"><span class="mono num">06</span><span class="cap-main">Torre Norte</span><span class="mono muted">Madrid · 2022</span></figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- ============ 04 · FOOTER · EL DIODO ============ -->
+  <footer class="pm pm--footer" id="pm-footer" data-theme="dark">
+    <span class="mono muted">04 — El diodo</span>
+    <a class="pm-email" href="mailto:hola@walo.studio">
+      <span class="pm-led" aria-hidden="true"></span>hola@walo.studio
+    </a>
+    <p class="mono muted">Madrid · working across Europe</p>
+  </footer>
+
+</main>
+
+<script src="photometry.js"></script>

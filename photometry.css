@@ -1,0 +1,135 @@
+/* =========================================================
+   PHOTOMETRY v2 · "De la fotometría a la realidad"
+   Hero + IES "pinchados" (sticky). El scroll dibuja/enciende.
+   Galería: cada foto se enciende al cruzar el centro. Footer: LED.
+   ========================================================= */
+
+:root{
+  --beam-y: 50%;
+  --beam-h: 40vh;
+  --beam-op: 0;
+  --pm-tech: #7d8a99;   /* frío (apagado) */
+  --pm-warm: #ffce8a;   /* cálido (encendido) */
+}
+
+.pm{ position:relative; }
+
+/* ---------- Wrappers altos para sticky ---------- */
+.pm-pinwrap{ position:relative; }
+#pm-hero-wrap{ height:240vh; }
+#pm-ies-wrap{  height:190vh; }
+
+/* =========================================================
+   HERO (sticky)
+   ========================================================= */
+.pm--hero{
+  position:sticky; top:0; height:100svh; overflow:hidden;
+  display:flex; flex-direction:column; justify-content:space-between;
+  padding:clamp(86px,13vh,150px) var(--pad) clamp(26px,4vh,44px);
+}
+.pm-title{
+  margin:.1em 0 0;
+  font-weight:800;
+  font-size:clamp(40px,8.5vw,140px);
+  line-height:.92; letter-spacing:-0.045em;
+}
+.pm-hero-stage{ flex:1; display:grid; place-items:center; min-height:0; padding:clamp(12px,3vh,32px) 0; }
+.pm-defs{ position:absolute; width:0; height:0; overflow:hidden; }
+
+/* hilera de luminarias */
+.pm-lamps{
+  display:flex; align-items:flex-start; justify-content:center;
+  gap:clamp(8px,2.4vw,52px); width:100%; max-width:1320px;
+}
+.pm-lamp{ flex:1 1 0; min-width:0; }
+.pm-lamp svg{ width:100%; height:auto; overflow:visible; }
+
+/* trazos (fríos → cálidos al encender) */
+.pm-fix{ fill:none; stroke:var(--pm-tech); stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+.pm-glow, .pm-pool{ opacity:0; }
+.pm-label{ font-family:var(--mono); font-size:13px; letter-spacing:.16em; fill:rgba(125,138,153,.6); text-transform:uppercase; }
+
+.pm-hero-foot{ display:flex; justify-content:space-between; gap:16px; flex-wrap:wrap; }
+
+/* =========================================================
+   IES (sticky)
+   ========================================================= */
+.pm--ies{
+  position:sticky; top:0; height:100svh; overflow:hidden;
+  display:flex; flex-direction:column; justify-content:center;
+  padding:clamp(60px,10vh,120px) var(--pad);
+}
+.pm-ies-stage{ display:grid; place-items:center; }
+.pm-ies-stage svg{ width:min(64vh,580px); height:auto; overflow:visible; transition:filter .4s, opacity .4s; }
+.pm-grid circle, .pm-grid line{ fill:none; stroke:rgba(125,138,153,.3); stroke-width:1.2; stroke-dasharray:1; }
+.pm-curve{ fill:rgba(255,206,138,.05); stroke:var(--pm-warm); stroke-width:2.4; stroke-dasharray:1; }
+.pm-coredot{ fill:var(--pm-warm); }
+
+/* =========================================================
+   Overlays fijos · haz + burst
+   ========================================================= */
+.pm-beam{
+  position:fixed; left:0; right:0; top:var(--beam-y); z-index:16;
+  transform:translateY(-50%);
+  height:var(--beam-h); pointer-events:none;
+  background:linear-gradient(180deg,
+    transparent 0%,
+    rgba(255,232,196,.04) 18%,
+    rgba(255,232,196,.18) 50%,
+    rgba(255,232,196,.04) 82%,
+    transparent 100%);
+  filter:blur(20px); mix-blend-mode:screen;
+  opacity:var(--beam-op);
+}
+.pm-burst{
+  position:fixed; left:50%; top:var(--beam-y); z-index:17;
+  transform:translate(-50%,-50%) scale(.2);
+  width:34vmax; height:34vmax; border-radius:50%;
+  background:radial-gradient(circle, rgba(255,238,196,.95) 0%, rgba(255,206,138,.3) 38%, transparent 70%);
+  pointer-events:none; mix-blend-mode:screen;
+  opacity:0; transition:transform .8s var(--ease), opacity .6s var(--ease);
+}
+.pm-burst.is-on{ opacity:1; transform:translate(-50%,-50%) scale(1); }
+
+/* =========================================================
+   WORK · reveal por brillo
+   ========================================================= */
+.pm--work .gallery{ padding-bottom:18vh; }
+.pm--work .tile__media img{ transition:filter .1s linear; }
+
+/* =========================================================
+   FOOTER · LED
+   ========================================================= */
+.pm--footer{
+  background:var(--ink);
+  min-height:92svh;
+  display:flex; flex-direction:column; justify-content:center; align-items:center;
+  gap:22px; text-align:center;
+  padding:clamp(72px,12vh,160px) var(--pad);
+}
+.pm-email{
+  display:inline-flex; align-items:center; gap:clamp(14px,2vw,26px);
+  font-weight:700; font-size:clamp(26px,6.5vw,92px); letter-spacing:-.02em;
+  color:var(--paper); transition:color .3s;
+}
+.pm-email:hover{ color:var(--signal); }
+.pm-led{
+  width:clamp(12px,1.6vw,22px); aspect-ratio:1; border-radius:50%;
+  background:var(--pm-warm); flex:none;
+  box-shadow:0 0 14px 3px var(--pm-warm), 0 0 50px 12px rgba(255,206,138,.5);
+  animation:pm-led-pulse 2.4s ease-in-out infinite;
+}
+@keyframes pm-led-pulse{
+  0%,100%{ transform:scale(1);   box-shadow:0 0 14px 3px var(--pm-warm), 0 0 46px 10px rgba(255,206,138,.42); }
+  50%   { transform:scale(1.12); box-shadow:0 0 26px 6px var(--pm-warm), 0 0 110px 24px rgba(255,206,138,.8); }
+}
+
+/* =========================================================
+   Responsive
+   ========================================================= */
+@media (max-width:900px){
+  #pm-hero-wrap{ height:210vh; }
+  #pm-ies-wrap{ height:160vh; }
+  .pm-schematic{ width:98vw; }
+  .pm-ies-stage svg{ width:82vw; }
+}
