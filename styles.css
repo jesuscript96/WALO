@@ -316,6 +316,7 @@ figure{ margin:0; }        /* reset del margen por defecto del navegador (1em 40
   padding:clamp(18px,2.4vh,30px) 4px;
   border-bottom:1px solid var(--on-light-line);
   position:relative;
+  isolation:isolate;            /* fija el contexto de apilado para que el ::after amarillo no quede tapado */
   transition:padding-left .45s var(--ease), color .3s;
 }
 .row .num{ color:var(--on-light-mut); }
