@@ -35,8 +35,10 @@ body{ background:#fff; color:var(--on-light); }
 .sc--footer .contact__lockup{ align-items:center; }
 .sc--footer .wordmark--xl{ color:var(--paper); }
 
-/* footer-o = objetivo donde encaja el eclipse al 100% de scroll */
-.footer-o{ position:relative; }
+/* footer-o = objetivo donde encaja el eclipse al 100% de scroll.
+   Al unirse, la O adopta el amarillo señal de la marca. */
+.footer-o{ position:relative; transition:border-color .5s var(--ease); }
+.footer-o.is-signal{ border-color:var(--signal); }
 
 /* =========================================================
    Light Cycle · overlay sticky (fixed)
@@ -86,6 +88,27 @@ body{ background:#fff; color:var(--on-light); }
   will-change:opacity,transform;
 }
 
+/* --- Vídeo del hero: fijo, detrás del título y de la O viajera (overlay z15) --- */
+.hero-video{
+  position:absolute; z-index:1;
+  top:120px;                                /* un poco más bajo que el header */
+  left:calc(var(--pad) + 16.5vw);           /* un poco más a la izquierda */
+  height:50vh;
+  width:calc(50vh * 1.7766);                /* proporcional a 1400x788 */
+  pointer-events:none;
+}
+.sc--hero .kicker,
+.sc--hero .hero__foot{ position:relative; z-index:2; }
+
+/* Título: contraste siempre (difference), como la bola viajera.
+   Se aplica por palabra (.w) para que el punto amarillo no se invierta. */
+.sc--hero .hero__title .w{
+  color:#fff;
+  mix-blend-mode:difference;
+  position:relative; z-index:2;
+}
+.sc--hero .hero__title .dot{ position:relative; z-index:2; }
+
 /* =========================================================
    Indicador de fase (Sol / Lens / Eclipse) — editorial
    ========================================================= */
@@ -117,4 +140,10 @@ body{ background:#fff; color:var(--on-light); }
   .lc-o{ width:42vmax; height:42vmax; }
   .lc-ring{ border-width:4vmax; }
   .cycle-indicator{ bottom:20px; right:16px; }
+  /* En móvil el vídeo va encima del título, a ancho completo */
+  .hero-video{
+    position:relative; top:auto; left:auto;
+    width:100% !important; height:auto !important;
+    margin:0 0 clamp(20px,4vh,36px);
+  }
 }

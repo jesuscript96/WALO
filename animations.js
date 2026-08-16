@@ -23,6 +23,11 @@
   const indicator = document.querySelector(".cycle-indicator");
   if (!lc || !o || !footerO) return;
 
+  /* Amarillo señal de la marca (token --signal) */
+  const SIGNAL =
+    (getComputedStyle(document.documentElement).getPropertyValue("--signal") || "").trim() || "#E9E700";
+  const SIGNAL_GLOW = "rgba(233,231,0,.45)";
+
   /* ---------- Reveal (IntersectionObserver, reemplaza a main.js) ---------- */
   const io = new IntersectionObserver((entries) => {
     entries.forEach(e => {
@@ -34,7 +39,7 @@
   /* ---------- Intro del hero ---------- */
   gsap.timeline({ delay: 0.25 })
     .from(".sc--hero .kicker",        { opacity: 0, y: 24, duration: 0.8, ease: "power2.out" })
-    .from(".sc--hero .hero__title span",
+    .from(".sc--hero .hero__title > span",
           { opacity: 0, yPercent: 120, duration: 1.0, stagger: 0.1, ease: "power3.out" }, "-=0.45")
     .from(".sc--hero .hero__foot > *",
           { opacity: 0, y: 18, duration: 0.6, stagger: 0.1, ease: "power2.out" }, "-=0.5");
@@ -99,6 +104,8 @@
         const night = p > 0.60;
         lc.classList.toggle("is-night", night);
         indicator.classList.toggle("is-night", night);
+        // al unirse con la O del footer, esta adopta el amarillo de marca
+        footerO.classList.toggle("is-signal", p >= 0.94);
       }
     }
   });
@@ -124,13 +131,20 @@
     .to(ring, { opacity: 1, duration: 0.10, ease: "power2.out" }, 0.80)
 
     // 0.90–1.00 · CIERRE : el eclipse encaja en la O del footer
+    // y se convierte en el amarillo señal de la marca
     .to(o,    {
       x: () => footerTarget().x,
       y: () => footerTarget().y,
       scale: () => footerTarget().scale,
       duration: 0.10,
       ease: "power3.inOut"
-    }, 0.90);
+    }, 0.90)
+    .to(ring, {
+      borderColor: SIGNAL,
+      boxShadow: "0 0 6vmax " + SIGNAL_GLOW,
+      duration: 0.06,
+      ease: "power2.inOut"
+    }, 0.94);
 
   window.addEventListener("load", () => ScrollTrigger.refresh());
 })();
