@@ -328,7 +328,9 @@ html:not(.js) .light-cycle{ display:none; }
 }
 .lc-ring{
   position:absolute; inset:0; border-radius:50%;
-  border:2.4vmax solid var(--ball);
+  /* misma proporción que la O eclipse del wordmark (borde 0.095em / 0.72em),
+     para que al encajar en .footer-o los dos anillos coincidan */
+  border:calc(26vmax * 0.095 / 0.72) solid var(--ball);
   box-shadow:0 0 6vmax color-mix(in srgb, var(--ball) 45%, transparent);
   opacity:0;
   will-change:opacity;

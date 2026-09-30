@@ -78,11 +78,13 @@ function lightCycle() {
     const tNight = clamp01((pageTop(contact.el) + winH * 0.36 * 0.6 - winH * 0.5) / max);
     const tWork = pts[1]?.t ?? 0.12;
 
-    // destino final: la O del footer con el scroll al 100%
+    // destino final: la O del footer con el scroll al 100%.
+    // Se centra respecto a la capa fija (clientWidth/Height, sin la barra de scroll),
+    // no respecto a innerWidth: si no, la bola aterriza desplazada media barra.
     const fr = footerO.getBoundingClientRect();
     const target = {
-      x: fr.left + fr.width / 2 - window.innerWidth / 2,
-      y: fr.top + window.scrollY + fr.height / 2 - max - winH / 2,
+      x: fr.left + fr.width / 2 - lc.clientWidth / 2,
+      y: fr.top + window.scrollY + fr.height / 2 - max - lc.clientHeight / 2,
       s: fr.width / o.offsetWidth,
     };
 
@@ -144,6 +146,8 @@ function lightCycle() {
 
   build();
   let lastW = window.innerWidth;
+  let lastVH = window.innerHeight;
+  const touch = window.matchMedia("(pointer: coarse)").matches;
   let rt: number | undefined;
   const rebuild = () => {
     clearTimeout(rt);
@@ -153,8 +157,12 @@ function lightCycle() {
     }, 180);
   };
   window.addEventListener("resize", () => {
-    if (window.innerWidth === lastW) return; // ignora el resize de la barra del navegador móvil
+    // en táctil se ignora el cambio de alto (barra del navegador móvil);
+    // en escritorio el alto también mueve el punto de aterrizaje en el footer
+    const heightChanged = !touch && window.innerHeight !== lastVH;
+    if (window.innerWidth === lastW && !heightChanged) return;
     lastW = window.innerWidth;
+    lastVH = window.innerHeight;
     rebuild();
   });
   window.addEventListener("load", rebuild);
