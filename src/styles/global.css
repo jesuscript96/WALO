@@ -266,6 +266,9 @@ button{ font:inherit; color:inherit; }
 .lang a:hover,
 .lang a[aria-current="true"]{ opacity:1; }
 .lang__sep{ opacity:.3; }
+/* copia en la barra para móvil: mismo tamaño que "MENÚ", pegada a su izquierda */
+.lang--bar{ display:none; margin-left:auto; margin-right:clamp(18px,5vw,28px); font-size:12px; letter-spacing:.14em; }
+.lang--bar a{ padding:10px 2px; }   /* área táctil más cómoda */
 
 /* Burger + menú móvil */
 .burger{ display:none; background:none; border:0; cursor:pointer; padding:8px 0; align-items:center; gap:10px; }
@@ -924,6 +927,7 @@ html:not(.js-motion-off) .contact-section .field input:-webkit-autofill{ -webkit
   :root{ --header-h:64px; }
   .nav{ display:none; }
   .burger{ display:inline-flex; }
+  .lang--bar{ display:inline-flex; }
   .about__cols,
   .contact-block,
   .p-intro,

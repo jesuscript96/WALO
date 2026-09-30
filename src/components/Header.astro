@@ -64,6 +64,13 @@ const isProject = projects.some((p) => current === paths.project(lang, p.slug));
     </div>
   </nav>
 
+  <!-- Selector de idioma visible en la barra en móvil (el de .nav se oculta con el menú) -->
+  <div class="lang lang--bar mono" aria-label={s.langLabel}>
+    <a href={alternates.es} hreflang="es" lang="es" aria-current={lang === "es" ? "true" : undefined}>ES</a>
+    <span class="lang__sep" aria-hidden="true">/</span>
+    <a href={alternates.en} hreflang="en" lang="en" aria-current={lang === "en" ? "true" : undefined}>EN</a>
+  </div>
+
   <button class="burger nav__link" type="button" aria-expanded="false" aria-controls="mobile-menu" data-open-label={s.menu} data-close-label={s.close}>
     <span class="burger__label">{s.menu}</span>
     <span class="burger__lines" aria-hidden="true"></span>
@@ -90,10 +97,6 @@ const isProject = projects.some((p) => current === paths.project(lang, p.slug));
   </div>
   <div class="mobile-menu__foot">
     <a class="mono" href={`mailto:${EMAIL}`}>{EMAIL}</a>
-    <div class="lang mono" aria-label={s.langLabel}>
-      <a href={alternates.es} hreflang="es" lang="es" aria-current={lang === "es" ? "true" : undefined}>ES</a>
-      <span class="lang__sep" aria-hidden="true">/</span>
-      <a href={alternates.en} hreflang="en" lang="en" aria-current={lang === "en" ? "true" : undefined}>EN</a>
-    </div>
+    <!-- el selector de idioma está en la barra (.lang--bar), siempre visible en móvil -->
   </div>
 </div>
