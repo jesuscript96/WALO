@@ -56,6 +56,22 @@ function lightCycle() {
   };
 
   let tl: gsap.core.Timeline | null = null;
+  // punto de aterrizaje en la O del footer (scroll en px y progreso) y arranque del tramo final
+  let land = { scroll: Infinity, t: 1, tFooter: 1 };
+
+  // Relevo: cuando la bola ha encajado, se oculta y se enciende la O real del footer, que
+  // se desplaza con el scroll nativo (en móvil el footer es más alto que la pantalla).
+  // Mientras tanto la capa sigue al scroll para que la bola no se quede atrás.
+  const syncDock = () => {
+    if (!tl) return;
+    const y = window.scrollY;
+    const docked = tl.progress() >= land.t - 0.0005 && y >= land.scroll - 1;
+    const shift = Math.max(0, y - land.scroll);
+    lc.style.transform = shift > 0 && !docked ? `translate3d(0,${(-shift).toFixed(2)}px,0)` : "";
+    lc.classList.toggle("is-docked", docked);
+    footerO.classList.toggle("is-docked", docked);
+    footerO.classList.toggle("is-waiting", !docked && tl.progress() >= land.tFooter);
+  };
 
   const build = () => {
     if (tl) {
@@ -78,15 +94,25 @@ function lightCycle() {
     const tNight = clamp01((pageTop(contact.el) + winH * 0.36 * 0.6 - winH * 0.5) / max);
     const tWork = pts[1]?.t ?? 0.12;
 
-    // destino final: la O del footer con el scroll al 100%.
+    // Destino final: la O del footer. Si con el scroll al 100% la O se ve entera bajo el
+    // header, se aterriza al final; si no (móvil: footer más alto que la pantalla), se
+    // aterriza cuando la O está al 40% del alto de la pantalla.
     // Se centra respecto a la capa fija (clientWidth/Height, sin la barra de scroll),
     // no respecto a innerWidth: si no, la bola aterriza desplazada media barra.
+    const lc0 = lc.style.transform;
+    lc.style.transform = "";
     const fr = footerO.getBoundingClientRect();
+    lc.style.transform = lc0;
+    const fcY = fr.top + window.scrollY + fr.height / 2; // centro de la O en la página
+    const headerH = document.querySelector<HTMLElement>(".site-header")?.offsetHeight ?? 0;
+    const oTopAtEnd = fcY - fr.height / 2 - max;
+    const scrollLand = oTopAtEnd >= headerH ? max : Math.max(0, fcY - lc.clientHeight * 0.4);
     const target = {
       x: fr.left + fr.width / 2 - lc.clientWidth / 2,
-      y: fr.top + window.scrollY + fr.height / 2 - max - lc.clientHeight / 2,
+      y: fcY - scrollLand - lc.clientHeight / 2,
       s: fr.width / o.offsetWidth,
     };
+    land = { scroll: scrollLand, t: scrollLand / max, tFooter };
 
     const k0 = KEYS[pts[0].key];
     gsap.set(o, { xPercent: -50, yPercent: -50, x: vw(k0.x), y: vh(k0.y), scale: k0.s });
@@ -97,6 +123,7 @@ function lightCycle() {
 
     tl = gsap.timeline({
       defaults: { ease: "none" },
+      onUpdate: syncDock,
       scrollTrigger: {
         start: 0,
         end: "max",
@@ -107,9 +134,8 @@ function lightCycle() {
           lc!.classList.toggle("is-night", night);
           indicator?.classList.toggle("is-night", night);
           setPhase(p < tWork * 0.8 ? "sol" : night ? "eclipse" : "lens");
-          footerO!.classList.toggle("is-lit", p >= 0.97);
           // visible solo entre el hero y el pie (no pisa "↓ Desliza" ni "Volver arriba")
-          indicator?.classList.toggle("is-visible", window.scrollY > winH * 0.45 && p < 0.97);
+          indicator?.classList.toggle("is-visible", window.scrollY > winH * 0.45 && p < Math.min(0.97, land.t));
         },
       },
     });
@@ -137,14 +163,16 @@ function lightCycle() {
       .to(ring, { opacity: 1, duration: dEclipse, ease: "power2.out" }, tEclipse);
 
     // Cierre: el eclipse encaja en la O del footer y toma el último color
-    const dLand = Math.max(0.01, 1 - tFooter);
+    const dLand = Math.max(0.01, land.t - tFooter);
     tl.to(o, { x: target.x, y: target.y, scale: target.s, duration: dLand, ease: "power3.inOut" }, tFooter)
       .to(root, { "--ball": COLORS[footer.dataset.ball || "aurora"], duration: dLand * 0.8 }, tFooter);
 
     tl.set({}, {}, 1); // la timeline dura exactamente 1 → progreso de scroll 0..1
+    syncDock();
   };
 
   build();
+  window.addEventListener("scroll", syncDock, { passive: true });
   let lastW = window.innerWidth;
   let lastVH = window.innerHeight;
   const touch = window.matchMedia("(pointer: coarse)").matches;

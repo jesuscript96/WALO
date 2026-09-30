@@ -679,7 +679,15 @@ html:not(.js) .cycle-indicator,
 }
 .footer__lockup .wordmark{ color:var(--paper); }
 .footer__lockup .wm-o{ transition:border-color .6s var(--ease), background-color .6s var(--ease), box-shadow .6s var(--ease); }
-.footer-o.is-lit{ border-color:var(--ball); box-shadow:0 0 5vw color-mix(in srgb, var(--ball) 40%, transparent); }
+/* Home: mientras la bola viene hacia el footer, la O queda vacía (la bola será la O);
+   al encajar, la bola se oculta y la O se enciende igual que el anillo (mismo borde y halo) */
+.footer-o.is-waiting{ border-color:transparent; box-shadow:none; transition:none; }
+.footer-o.is-docked{
+  border-color:var(--ball);
+  box-shadow:0 0 calc(0.72em * 6 / 26) color-mix(in srgb, var(--ball) 45%, transparent);
+  transition:none;
+}
+.light-cycle.is-docked{ visibility:hidden; }
 .lockup__sub{ letter-spacing:.34em; color:var(--on-dark-mut); padding-left:.2em; }
 .footer__grid{
   display:grid; grid-template-columns:1.3fr 1fr 1fr 1fr; gap:32px;
@@ -909,6 +917,7 @@ html:not(.js) .cycle-indicator,
   .gallery{ column-gap:0; }
   .lc-o{ width:42vmax; height:42vmax; }
   .lc-ring{ border-width:calc(42vmax * 0.095 / 0.72); } /* misma proporción que la O eclipse */
+  .footer-o.is-docked{ box-shadow:0 0 calc(0.72em * 6 / 42) color-mix(in srgb, var(--ball) 45%, transparent); }
   .cycle-indicator{ bottom:20px; right:16px; }
   .hero-video{
     position:relative; top:auto; left:auto;
