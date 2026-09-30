@@ -908,7 +908,7 @@ html:not(.js) .cycle-indicator,
   .tile{ grid-column:1 / -1 !important; margin-top:6vh !important; }
   .gallery{ column-gap:0; }
   .lc-o{ width:42vmax; height:42vmax; }
-  .lc-ring{ border-width:4vmax; }
+  .lc-ring{ border-width:calc(42vmax * 0.095 / 0.72); } /* misma proporción que la O eclipse */
   .cycle-indicator{ bottom:20px; right:16px; }
   .hero-video{
     position:relative; top:auto; left:auto;
