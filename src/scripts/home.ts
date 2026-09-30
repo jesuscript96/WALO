@@ -8,8 +8,9 @@
    ========================================================= */
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { MotionPathPlugin } from "gsap/MotionPathPlugin";
 
-gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
 
 const root = document.documentElement;
 const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -144,28 +145,57 @@ function lightCycle() {
     tl.to(cone, { opacity: 0.9, duration: tWork * 0.25, ease: "power1.out" }, 0)
       .to(cone, { opacity: 0, duration: tWork * 0.35, ease: "power1.in" }, tWork * 0.3);
 
-    // Recorrido sección a sección + cambio de color
-    for (let i = 1; i < pts.length; i++) {
-      const a = pts[i - 1];
-      const b = pts[i];
-      const k = KEYS[b.key] ?? KEYS.work;
-      const d = Math.max(0.001, b.t - a.t);
-      tl.to(o, { x: vw(k.x), y: vh(k.y), scale: k.s, duration: d, ease: "sine.inOut" }, a.t);
-      tl.to(root, { "--ball": b.color, duration: d * 0.55 }, b.t - d * 0.55);
+    // Recorrido: una sola curva suave hero → secciones → centro (eclipse) → O del footer,
+    // a velocidad constante respecto al scroll: sin paradas en los cambios de sección y
+    // sin depender de lo larga que sea cada sección.
+    const route = [
+      ...pts.map((p) => {
+        const k = KEYS[p.key] ?? KEYS.work;
+        return { x: vw(k.x), y: vh(k.y), s: k.s };
+      }),
+      { x: 0, y: vh(-4), s: 0.9 }, // noche: el eclipse pasa por el centro
+      target,
+    ];
+    // longitud de cada tramo = desplazamiento + cambio de radio (el tamaño también se percibe como movimiento)
+    const size = o.offsetWidth;
+    const lens = route.slice(1).map((b, i) => {
+      const a = route[i];
+      return Math.hypot(b.x - a.x, b.y - a.y) + (Math.abs(b.s - a.s) * size) / 2;
+    });
+    const total = lens.reduce((sum, l) => sum + l, 0) || 1;
+    const tEnd = Math.max(0.01, land.t);
+    tl.to(
+      o,
+      {
+        motionPath: { path: route.map(({ x, y }) => ({ x, y })), curviness: 1, fromCurrent: false },
+        duration: tEnd,
+      },
+      0,
+    );
+    // el tamaño cambia al mismo ritmo: cada tramo ocupa su parte proporcional del recorrido
+    let acc = 0;
+    for (let i = 0; i < lens.length; i++) {
+      const d = (lens[i] / total) * tEnd;
+      tl.to(o, { scale: route[i + 1].s, duration: Math.max(0.001, d) }, (acc / total) * tEnd);
+      acc += lens[i];
     }
 
-    // Noche: la O sube al centro y se abre en eclipse (disco → anillo)
+    // Color: cambia al entrar en cada sección (independiente del recorrido)
+    for (let i = 1; i < pts.length; i++) {
+      const d = Math.max(0.001, pts[i].t - pts[i - 1].t);
+      tl.to(root, { "--ball": pts[i].color, duration: d * 0.55 }, pts[i].t - d * 0.55);
+    }
+
+    // Noche: la O se abre en eclipse (disco → anillo) mientras avanza por contacto
     const tStart = contact.t;
     const dEclipse = Math.max(0.01, (tFooter - tStart) * 0.4);
     const tEclipse = Math.max(tStart, tFooter - dEclipse);
-    tl.to(o, { x: 0, y: vh(-4), scale: 0.9, duration: dEclipse, ease: "power2.inOut" }, tEclipse)
-      .to(disc, { opacity: 0, scale: 0.5, duration: dEclipse, ease: "power2.in" }, tEclipse)
+    tl.to(disc, { opacity: 0, scale: 0.5, duration: dEclipse, ease: "power2.in" }, tEclipse)
       .to(ring, { opacity: 1, duration: dEclipse, ease: "power2.out" }, tEclipse);
 
-    // Cierre: el eclipse encaja en la O del footer y toma el último color
+    // Cierre: toma el último color mientras encaja en la O del footer
     const dLand = Math.max(0.01, land.t - tFooter);
-    tl.to(o, { x: target.x, y: target.y, scale: target.s, duration: dLand, ease: "power3.inOut" }, tFooter)
-      .to(root, { "--ball": COLORS[footer.dataset.ball || "aurora"], duration: dLand * 0.8 }, tFooter);
+    tl.to(root, { "--ball": COLORS[footer.dataset.ball || "aurora"], duration: dLand * 0.8 }, tFooter);
 
     tl.set({}, {}, 1); // la timeline dura exactamente 1 → progreso de scroll 0..1
     syncDock();
