@@ -592,7 +592,17 @@ html:not(.js) .cycle-indicator,
   -webkit-text-fill-color:var(--fg);
   transition:background-color 99999s ease-in-out 0s;
 }
-/* Home: el formulario de contacto toma el color de la bola (--ball) y lo sigue en directo.
+/* Home: el formulario queda por encima de la capa de la bola (.light-cycle, z-index 15) con
+   el fondo de la sección ligeramente translúcido y un borde difuminado: el anillo pasa por
+   detrás, se intuye tenue y se desvanece al entrar, sin corte visible.
+   Por debajo del indicador de fase (25) y del header (30). */
+html:not(.js-motion-off) .contact-section .form-wrap{
+  --veil:color-mix(in srgb, var(--bg) 80%, transparent);
+  position:relative; z-index:16;
+  background:var(--veil);
+  box-shadow:0 0 32px 24px var(--veil);
+}
+/* El formulario de contacto toma el color de la bola (--ball) y lo sigue en directo.
    Sin bola (reducir movimiento) se queda con los colores normales. */
 html:not(.js-motion-off) .contact-section .field label,
 html:not(.js-motion-off) .contact-section .field input,
