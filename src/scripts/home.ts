@@ -186,10 +186,12 @@ function lightCycle() {
       tl.to(root, { "--ball": pts[i].color, duration: d * 0.55 }, pts[i].t - d * 0.55);
     }
 
-    // Noche: la O se abre en eclipse (disco → anillo) mientras avanza por contacto
-    const tStart = contact.t;
-    const dEclipse = Math.max(0.01, (tFooter - tStart) * 0.4);
-    const tEclipse = Math.max(tStart, tFooter - dEclipse);
+    // Noche: la O se abre en eclipse (disco → anillo) al entrar en contacto, antes de llegar
+    // al formulario: sobre los campos solo pasa el anillo y el hueco deja leer y escribir.
+    // Empieza cuando la sección asoma (85% del alto) y acaba con su borde al 35%.
+    const cTop = pageTop(contact.el);
+    const tEclipse = clamp01((cTop - winH * 0.85) / max);
+    const dEclipse = Math.max(0.01, clamp01((cTop - winH * 0.35) / max) - tEclipse);
     tl.to(disc, { opacity: 0, scale: 0.5, duration: dEclipse, ease: "power2.in" }, tEclipse)
       .to(ring, { opacity: 1, duration: dEclipse, ease: "power2.out" }, tEclipse);
 

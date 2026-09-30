@@ -592,6 +592,16 @@ html:not(.js) .cycle-indicator,
   -webkit-text-fill-color:var(--fg);
   transition:background-color 99999s ease-in-out 0s;
 }
+/* Home: el formulario de contacto toma el color de la bola (--ball) y lo sigue en directo.
+   Sin bola (reducir movimiento) se queda con los colores normales. */
+html:not(.js-motion-off) .contact-section .field label,
+html:not(.js-motion-off) .contact-section .field input,
+html:not(.js-motion-off) .contact-section .field textarea{ color:var(--ball); }
+html:not(.js-motion-off) .contact-section .field input::placeholder,
+html:not(.js-motion-off) .contact-section .field textarea::placeholder{ color:var(--ball); }
+html:not(.js-motion-off) .contact-section .field:not(.is-invalid) input:focus,
+html:not(.js-motion-off) .contact-section .field:not(.is-invalid) textarea:focus{ border-color:var(--ball); box-shadow:0 1px 0 0 var(--ball); }
+html:not(.js-motion-off) .contact-section .field input:-webkit-autofill{ -webkit-text-fill-color:var(--ball); }
 .field.is-invalid input,
 .field.is-invalid textarea{ border-color:var(--err); box-shadow:0 1px 0 0 var(--err); }
 .field__error{
