@@ -1,0 +1,57 @@
+---
+import { EMAIL, paths, t, type Lang } from "../i18n";
+import { projects } from "../data/projects";
+
+interface Props {
+  lang: Lang;
+  /** Home: la O del footer es un anillo (eclipse) donde encaja la bola */
+  target?: boolean;
+}
+const { lang, target = false } = Astro.props;
+const s = t(lang);
+---
+
+<footer class="site-footer" id="footer" data-theme="dark" data-ball={target ? "aurora" : undefined}>
+  <div class="footer__lockup">
+    <span class="wordmark wordmark--xl" aria-label="WALO">
+      <span class="wm-letters">WAL</span><span
+        class:list={["wm-o", target ? "wm-o--eclipse footer-o" : "wm-o--accent"]}
+        aria-hidden="true"></span>
+    </span>
+    <span class="mono lockup__sub">{s.footer.sub}</span>
+  </div>
+
+  <div class="footer__grid">
+    <div class="footer__col">
+      <span class="mono muted">{s.footer.write}</span>
+      <a class="footer__mail" href={`mailto:${EMAIL}`}>{EMAIL}</a>
+    </div>
+    <div class="footer__col">
+      <span class="mono muted">{s.footer.studio}</span>
+      <p set:html={s.footer.studioText} />
+    </div>
+    <div class="footer__col">
+      <span class="mono muted">{s.nav.projects}</span>
+      <div class="footer__links">
+        {projects.map((p) => <a href={paths.project(lang, p.slug)}>{p[lang].name}</a>)}
+      </div>
+    </div>
+    <div class="footer__col">
+      <span class="mono muted">{s.footer.follow}</span>
+      <div class="footer__links">
+        <!-- placeholders: enlazar perfiles reales -->
+        <a href="#" rel="noopener">Instagram</a>
+        <a href="#" rel="noopener">LinkedIn</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer__bottom mono">
+    <span>© 2026 WALO</span>
+    <span class="footer__swatches" aria-hidden="true">
+      <i style="background:var(--ember)"></i><i style="background:var(--ultra)"></i><i style="background:var(--aurora)"></i>
+    </span>
+    <span>{s.footer.tagline}</span>
+    <a href="#main">{s.footer.top}</a>
+  </div>
+</footer>

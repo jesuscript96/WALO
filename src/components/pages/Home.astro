@@ -1,0 +1,201 @@
+---
+/* HOME · "El Ciclo de la Luz"
+   La O recorre la página con el scroll: Sol → Lente → Eclipse →
+   encaja en la O del footer. Cambia de color en cada sección
+   (Brasa → Hora azul → Aurora → …) según su `data-ball`. */
+import Base from "../../layouts/Base.astro";
+import ContactForm from "../ContactForm.astro";
+import { EMAIL, ids, paths, t, type Lang } from "../../i18n";
+import { projects } from "../../data/projects";
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const s = t(lang);
+const h = s.home;
+const id = ids[lang];
+
+const bySlug = Object.fromEntries(projects.map((p) => [p.slug, p]));
+/* Galería: 2 imágenes por proyecto, cada una enlaza a su página.
+   speed/drift = ritmo de caída propio de cada imagen (parallax multivelocidad). */
+const tiles = [
+  { slug: "museo-ampliacion", src: "10", col: 2, span: 5, mt: "2vh", ar: "3/4", speed: 0.05, drift: -0.03 },
+  { slug: "torre-norte", src: "01", col: 8, span: 4, mt: "26vh", ar: "4/3", speed: 0.2, drift: 0.05 },
+  { slug: "convento", src: "09", col: 3, span: 4, mt: "14vh", ar: "1/1", speed: 0.11, drift: -0.05 },
+  { slug: "torre-norte", src: "12", col: 8, span: 5, mt: "6vh", ar: "3/4", speed: 0.04, drift: 0.03 },
+  { slug: "pabellon-expo", src: "08", col: 2, span: 4, mt: "16vh", ar: "4/3", speed: 0.17, drift: -0.04 },
+  { slug: "museo-ampliacion", src: "07", col: 7, span: 5, mt: "4vh", ar: "4/3", speed: 0.08, drift: 0.06 },
+  { slug: "convento", src: "03", col: 3, span: 4, mt: "18vh", ar: "3/4", speed: 0.14, drift: -0.06 },
+  { slug: "pabellon-expo", src: "05", col: 8, span: 4, mt: "10vh", ar: "1/1", speed: 0.22, drift: 0.04 },
+].map((tile) => ({ ...tile, p: bySlug[tile.slug] }));
+---
+
+<Base
+  lang={lang}
+  title={s.meta.title}
+  description={s.meta.description}
+  alternates={{ es: paths.home("es"), en: paths.home("en") }}
+  accent="ember"
+  heroTheme="light"
+  footerTarget
+>
+  <Fragment slot="overlay">
+    <!-- Overlay fijo: la O como dispositivo -->
+    <div class="light-cycle" aria-hidden="true">
+      <div class="lc-cone"></div>
+      <div class="lc-o">
+        <div class="lc-disc"></div>
+        <div class="lc-ring"></div>
+      </div>
+    </div>
+    <div class="cycle-indicator mono" aria-hidden="true">
+      <span class="ci-phase" data-phase="sol">01 — {h.phases[0]}</span>
+      <span class="ci-phase" data-phase="lens">02 — {h.phases[1]}</span>
+      <span class="ci-phase" data-phase="eclipse">03 — {h.phases[2]}</span>
+    </div>
+  </Fragment>
+
+  <!-- ============ HERO · DÍA · SOL ============ -->
+  <section class="hero section" data-theme="light" data-accent="ember" data-ball="ember" data-cycle="hero">
+    <video
+      class="hero-video"
+      src="/assets/video/lightshero.mp4"
+      poster="/assets/video/lightshero-poster.jpg"
+      autoplay
+      muted
+      loop
+      playsinline
+      preload="metadata"
+      aria-hidden="true"></video>
+    <p class="kicker" data-hero-in>{h.kicker}</p>
+    <h1 class="hero__title">
+      <span class="w" data-hero-in>{h.title[0]}</span>
+      <span class="w" data-hero-in>{h.title[1]}</span>
+      <span><span class="w" data-hero-in>{h.title[2]}</span><span class="dot" data-hero-in>.</span></span>
+    </h1>
+    <div class="hero__foot">
+      <span class="mono" data-hero-in>{h.footLeft}</span>
+      <a class="mono link-u" href={`#${id.work}`} data-hero-in>{h.footRight}</a>
+    </div>
+  </section>
+
+  <!-- ============ OBRA · LENTE ============ -->
+  <section class="work section" id={id.work} data-theme="light" data-accent="ultra" data-ball="ultra" data-cycle="work">
+    <div class="section-head">
+      <span class="mono index">{h.workIndex}</span>
+      <span class="mono muted">{h.workAside}</span>
+    </div>
+    <div class="gallery">
+      {
+        tiles.map((tile) => {
+          const c = tile.p[lang];
+          return (
+            <figure
+              class="tile"
+              data-accent={tile.p.accent}
+              data-speed={tile.speed}
+              data-drift={tile.drift}
+              style={`--col:${tile.col};--span:${tile.span};--mt:${tile.mt};--ar:${tile.ar};`}
+            >
+              <a href={paths.project(lang, tile.p.slug)} aria-label={`${s.project.viewProject}: ${c.name}`}>
+                <div class="tile__media">
+                  <img src={`/assets/images/walo-${tile.src}.jpg`} alt="" loading="lazy" decoding="async" />
+                  <span class="tile__tag mono" aria-hidden="true">{s.project.viewProject}</span>
+                </div>
+                <figcaption class="tile__cap">
+                  <span class="mono num">{tile.p.num}</span>
+                  <span class="cap-main">{c.name}</span>
+                  <span class="mono muted">{c.place} · {tile.p.year}</span>
+                </figcaption>
+              </a>
+            </figure>
+          );
+        })
+      }
+    </div>
+  </section>
+
+  <!-- ============ SOBRE NOSOTROS ============ -->
+  <section class="about section" id={id.about} data-theme="light" data-accent="aurora" data-ball="aurora" data-cycle="about">
+    <div class="section-head">
+      <span class="mono index">{h.aboutIndex}</span>
+      <span class="mono muted">{lang === "es" ? "Madrid → Europa" : "Madrid → Europe"}</span>
+    </div>
+    <h2 class="statement reveal">{h.aboutStatement}<span class="dot">.</span></h2>
+    <div class="about__cols">
+      <div class="about__text reveal">
+        {h.aboutBody.map((p) => <p>{p}</p>)}
+      </div>
+      <div class="reveal">
+        <span class="mono list-label">{h.disciplinesLabel}</span>
+        <ul class="disciplines mono">
+          {h.disciplines.map((d) => <li>{d}</li>)}
+        </ul>
+      </div>
+    </div>
+    <div class="process">
+      {
+        h.process.map((step, i) => (
+          <div class="process__step reveal">
+            <span class="mono process__num">
+              0{i + 1} — {h.processLabel}
+            </span>
+            <h3 class="process__title">{step.title}</h3>
+            <p class="process__text">{step.text}</p>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- ============ ÍNDICE DE PROYECTOS ============ -->
+  <section class="index-list section" id={id.projects} data-theme="light" data-accent="ember" data-ball="ember" data-cycle="projects">
+    <div class="section-head">
+      <span class="mono index">{h.projectsIndex}</span>
+      <span class="mono muted">{h.projectsAside}</span>
+    </div>
+    <ol class="rows" data-rows>
+      {
+        projects.map((p, i) => {
+          const c = p[lang];
+          return (
+            <li>
+              <a class="row" href={paths.project(lang, p.slug)} data-accent={p.accent} data-preview={i}>
+                <span class="mono num">{p.num}</span>
+                <span class="row__name">{c.name}</span>
+                <span class="mono row__type">{c.type}</span>
+                <span class="mono row__place">{c.place}</span>
+                <span class="mono row__year">{p.year}</span>
+                <span class="row__arrow" aria-hidden="true">→</span>
+              </a>
+            </li>
+          );
+        })
+      }
+    </ol>
+    <div class="row-preview" aria-hidden="true">
+      {projects.map((p) => <img src={p.hero.src} alt="" loading="lazy" style={`object-position:${p.hero.pos ?? "50% 50%"}`} />)}
+    </div>
+  </section>
+
+  <!-- ============ CONTACTO · NOCHE ============ -->
+  <section class="contact-section section night-fade" id={id.contact} data-theme="dark" data-accent="ultra" data-ball="ultra" data-cycle="contact">
+    <div class="section-head">
+      <span class="mono index">{h.contactIndex}</span>
+      <span class="mono muted">{s.footer.tagline}</span>
+    </div>
+    <div class="contact-block">
+      <div>
+        <h2 class="contact-block__title reveal">{h.contactTitle}<span class="dot">.</span></h2>
+        <p class="contact-block__text reveal">{h.contactText}</p>
+        <a class="contact-block__mail link-u reveal" href={`mailto:${EMAIL}`}>{EMAIL}</a>
+      </div>
+      <ContactForm lang={lang} id="form-home" />
+    </div>
+  </section>
+</Base>
+
+<script>
+  import "../../scripts/home.ts";
+</script>

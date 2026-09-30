@@ -12,3 +12,7 @@
 # Dependencies
 node_modules/
 .vercel
+
+# Astro
+dist/
+.astro/

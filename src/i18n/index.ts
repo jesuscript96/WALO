@@ -1,0 +1,281 @@
+/* =========================================================
+   WALO — i18n
+   ES es el idioma por defecto (raíz). EN vive bajo /en.
+   ========================================================= */
+
+export const LANGS = ["es", "en"] as const;
+export type Lang = (typeof LANGS)[number];
+
+/** Anclas de sección de la home (localizadas). */
+export const ids = {
+  es: { work: "obra", about: "sobre-nosotros", projects: "proyectos", contact: "contacto" },
+  en: { work: "work", about: "about", projects: "projects", contact: "contact" },
+} as const;
+
+export const paths = {
+  home: (l: Lang) => (l === "es" ? "/" : "/en"),
+  contact: (l: Lang) => (l === "es" ? "/contacto" : "/en/contact"),
+  project: (l: Lang, slug: string) => (l === "es" ? `/proyectos/${slug}` : `/en/projects/${slug}`),
+  section: (l: Lang, key: keyof (typeof ids)["es"]) => `${l === "es" ? "/" : "/en"}#${ids[l][key]}`,
+};
+
+export const EMAIL = "hola@walo.studio"; // placeholder: sustituir por el correo real
+
+export const ui = {
+  es: {
+    meta: {
+      title: "WALO — Estudio de diseño de iluminación",
+      description:
+        "WALO es un estudio de diseño de iluminación arquitectónica. La luz como arquitectura, desde Madrid hacia Europa.",
+    },
+    nav: {
+      label: "Principal",
+      projects: "Proyectos",
+      about: "Sobre nosotros",
+      contact: "Contacto",
+      menu: "Menú",
+      close: "Cerrar",
+      allProjects: "Ver índice de proyectos",
+      langLabel: "Idioma",
+      home: "WALO, inicio",
+    },
+    home: {
+      kicker: "WALO · Estudio de diseño de iluminación",
+      title: ["Luz", "como", "arquitectura"],
+      footLeft: "WALO · Madrid",
+      footRight: "↓ Desliza y sigue la luz",
+      phases: ["Sol", "Lente", "Eclipse"],
+      workIndex: "01 — Obra seleccionada",
+      workAside: "Iluminación arquitectónica · 2023—2025",
+      aboutIndex: "02 — Sobre nosotros",
+      aboutStatement:
+        "Tratamos la luz como un material de construcción: decide cómo se lee la arquitectura cuando cae la noche",
+      aboutBody: [
+        "WALO es un estudio de diseño de iluminación arquitectónica con base en Madrid y proyectos en toda Europa. Diseñamos la luz que revela estructura, materia y atmósfera: desde la primera idea hasta la última luminaria en obra.",
+        "Trabajamos junto a arquitectos, interioristas, promotores e instituciones culturales. Cada proyecto empieza con una pregunta sencilla —qué debe verse, y cómo— y termina cuando la luz se comporta en obra exactamente como la dibujamos.",
+      ],
+      disciplinesLabel: "Disciplinas",
+      disciplines: [
+        "Iluminación arquitectónica",
+        "Concepto y plan director",
+        "Proyecto técnico y fotometría",
+        "Dirección y puesta en marcha en obra",
+      ],
+      processLabel: "Cómo trabajamos",
+      process: [
+        { title: "Concepto", text: "Leemos el edificio, su uso y su contexto para definir una idea de luz clara y defendible." },
+        { title: "Proyecto", text: "Cálculo fotométrico, selección de sistemas y detalles constructivos listos para licitar." },
+        { title: "Obra", text: "Acompañamos la instalación, ajustamos enfoques y programamos escenas hasta la entrega." },
+      ],
+      projectsIndex: "03 — Proyectos",
+      projectsAside: "Índice · 04",
+      contactIndex: "04 — Contacto",
+      contactTitle: "Hablemos de tu proyecto",
+      contactText: "Cuéntanos qué quieres iluminar. Leemos cada mensaje y respondemos personalmente.",
+    },
+    project: {
+      breadcrumb: "Proyectos",
+      facts: { type: "Tipología", place: "Ubicación", year: "Año", area: "Superficie", status: "Estado" },
+      blocks: { scope: "Alcance WALO", concept: "Concepto lumínico", systems: "Sistemas destacados", result: "Resultado" },
+      gallery: "Galería",
+      faqs: "Preguntas frecuentes",
+      ctaTitle: "¿Tienes un proyecto en mente?",
+      ctaText: "Del concepto a la puesta en marcha: diseñamos la luz de tu próximo edificio.",
+      ctaButton: "Contacta con nosotros",
+      formTitle: "Queremos conocer tu proyecto",
+      next: "Siguiente proyecto",
+      viewProject: "Ver proyecto",
+      close: "Cerrar",
+      prev: "Anterior",
+      nextImg: "Siguiente",
+      openImage: "Ampliar imagen",
+    },
+    contactPage: {
+      title: "Contacto — WALO",
+      description: "Escríbenos para iniciar un proyecto de iluminación con WALO.",
+      kicker: "Contacto",
+      heading: ["Hablemos", "de luz"],
+      intro:
+        "Cuéntanos qué quieres iluminar: un edificio, un espacio interior, una fachada o un plan director. Te responderemos personalmente.",
+      email: "Correo",
+      studio: "Estudio",
+      studioText: "Madrid, España<br />Trabajando en toda Europa",
+      follow: "Síguenos",
+      formTitle: "Escríbenos",
+    },
+    footer: {
+      write: "Escríbenos",
+      studio: "Estudio",
+      studioText: "Madrid, España<br />Trabajando en toda Europa",
+      follow: "Síguenos",
+      tagline: "Iluminamos arquitectura desde Madrid hacia Europa",
+      top: "Volver arriba ↑",
+      sub: "Lighting Design Studio",
+    },
+    form: {
+      name: "Nombre",
+      email: "Correo electrónico",
+      phone: "Teléfono",
+      message: "Mensaje",
+      optional: "opcional",
+      namePh: "Tu nombre",
+      emailPh: "nombre@estudio.com",
+      phonePh: "+34 600 000 000",
+      messagePh: "Tipo de proyecto, ubicación, plazos…",
+      hint: "Déjanos al menos un correo o un teléfono.",
+      consent: "Acepto que WALO trate mis datos para responder a esta solicitud.",
+      submit: "Enviar",
+      sending: "Enviando…",
+      errors: {
+        name: "Escribe tu nombre.",
+        contact: "Déjanos un correo o un teléfono para poder responderte.",
+        email: "Revisa el correo: parece incompleto.",
+        phone: "Revisa el teléfono: usa solo números, espacios, guiones y +.",
+        consent: "Necesitamos tu consentimiento para poder responderte.",
+        summary: "Revisa los campos marcados.",
+      },
+      successTitle: "Mensaje recibido",
+      successBody: "Gracias, {name}. Te escribiremos muy pronto.",
+      again: "Enviar otro mensaje",
+      errorTitle: "No hemos podido enviar tu mensaje",
+      errorBody: "Inténtalo de nuevo en unos minutos o escríbenos a {email}.",
+      retry: "Reintentar",
+    },
+    notFound: {
+      title: "Página no encontrada — WALO",
+      heading: "Aquí no hay luz",
+      text: "La página que buscas no existe o ha cambiado de sitio.",
+      back: "Volver al inicio",
+    },
+  },
+
+  en: {
+    meta: {
+      title: "WALO — Lighting Design Studio",
+      description:
+        "WALO is an architectural lighting design studio. Lighting as architecture, from Madrid across Europe.",
+    },
+    nav: {
+      label: "Main",
+      projects: "Projects",
+      about: "About us",
+      contact: "Contact",
+      menu: "Menu",
+      close: "Close",
+      allProjects: "View project index",
+      langLabel: "Language",
+      home: "WALO, home",
+    },
+    home: {
+      kicker: "WALO · Lighting Design Studio",
+      title: ["Lighting", "as", "architecture"],
+      footLeft: "WALO · Madrid",
+      footRight: "↓ Scroll and follow the light",
+      phases: ["Sun", "Lens", "Eclipse"],
+      workIndex: "01 — Selected work",
+      workAside: "Architectural lighting · 2023—2025",
+      aboutIndex: "02 — About us",
+      aboutStatement:
+        "We treat light as a building material — it decides how architecture is read once night falls",
+      aboutBody: [
+        "WALO is an architectural lighting design studio based in Madrid, with projects across Europe. We design the light that reveals structure, material and atmosphere — from the first idea to the last fixture on site.",
+        "We work alongside architects, interior designers, developers and cultural institutions. Every project starts with a simple question — what should be seen, and how — and ends when the light behaves on site exactly as we drew it.",
+      ],
+      disciplinesLabel: "Disciplines",
+      disciplines: [
+        "Architectural lighting",
+        "Concept & masterplanning",
+        "Technical design & photometry",
+        "On-site commissioning",
+      ],
+      processLabel: "How we work",
+      process: [
+        { title: "Concept", text: "We read the building, its use and its context to define a clear, defensible idea of light." },
+        { title: "Design", text: "Photometric calculation, system selection and construction details ready for tender." },
+        { title: "Site", text: "We follow the installation, fine-tune aiming and programme scenes through to handover." },
+      ],
+      projectsIndex: "03 — Projects",
+      projectsAside: "Index · 04",
+      contactIndex: "04 — Contact",
+      contactTitle: "Let’s talk about your project",
+      contactText: "Tell us what you want to light. We read every message and reply personally.",
+    },
+    project: {
+      breadcrumb: "Projects",
+      facts: { type: "Typology", place: "Location", year: "Year", area: "Area", status: "Status" },
+      blocks: { scope: "WALO scope", concept: "Lighting concept", systems: "Key systems", result: "Outcome" },
+      gallery: "Gallery",
+      faqs: "FAQs",
+      ctaTitle: "Have a project in mind?",
+      ctaText: "From concept to commissioning: we design the light of your next building.",
+      ctaButton: "Get in touch",
+      formTitle: "We want to hear about your project",
+      next: "Next project",
+      viewProject: "View project",
+      close: "Close",
+      prev: "Previous",
+      nextImg: "Next",
+      openImage: "Enlarge image",
+    },
+    contactPage: {
+      title: "Contact — WALO",
+      description: "Write to us to start a lighting design project with WALO.",
+      kicker: "Contact",
+      heading: ["Let’s talk", "light"],
+      intro:
+        "Tell us what you want to light: a building, an interior, a façade or a masterplan. We will reply personally.",
+      email: "Email",
+      studio: "Studio",
+      studioText: "Madrid, Spain<br />Working across Europe",
+      follow: "Follow",
+      formTitle: "Write to us",
+    },
+    footer: {
+      write: "Write to us",
+      studio: "Studio",
+      studioText: "Madrid, Spain<br />Working across Europe",
+      follow: "Follow",
+      tagline: "Lighting architecture from Madrid, across Europe",
+      top: "Back to top ↑",
+      sub: "Lighting Design Studio",
+    },
+    form: {
+      name: "Name",
+      email: "Email",
+      phone: "Phone",
+      message: "Message",
+      optional: "optional",
+      namePh: "Your name",
+      emailPh: "name@studio.com",
+      phonePh: "+44 7700 000000",
+      messagePh: "Project type, location, timing…",
+      hint: "Leave at least an email or a phone number.",
+      consent: "I agree that WALO may process my data to reply to this request.",
+      submit: "Send",
+      sending: "Sending…",
+      errors: {
+        name: "Please enter your name.",
+        contact: "Leave an email or a phone number so we can reply.",
+        email: "Check the email: it looks incomplete.",
+        phone: "Check the phone: use digits, spaces, dashes and + only.",
+        consent: "We need your consent to be able to reply.",
+        summary: "Please review the highlighted fields.",
+      },
+      successTitle: "Message received",
+      successBody: "Thank you, {name}. We will be in touch very soon.",
+      again: "Send another message",
+      errorTitle: "We couldn’t send your message",
+      errorBody: "Please try again in a few minutes or write to us at {email}.",
+      retry: "Try again",
+    },
+    notFound: {
+      title: "Page not found — WALO",
+      heading: "No light here",
+      text: "The page you are looking for does not exist or has moved.",
+      back: "Back to home",
+    },
+  },
+} as const;
+
+export type UI = (typeof ui)["es"];
+export const t = (l: Lang) => ui[l] as unknown as UI;

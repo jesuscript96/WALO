@@ -1,0 +1,84 @@
+---
+import "../styles/global.css";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import type { Lang } from "../i18n";
+import type { Accent } from "../data/projects";
+
+interface Props {
+  lang: Lang;
+  title: string;
+  description: string;
+  /** URL equivalente en cada idioma (para hreflang y el selector ES/EN) */
+  alternates: Record<Lang, string>;
+  accent?: Accent;
+  /** Tema de la primera pantalla (color inicial del header) */
+  heroTheme?: "light" | "dark";
+  /** En la home la O del footer es el destino de la bola */
+  footerTarget?: boolean;
+  ogImage?: string;
+  noindex?: boolean;
+}
+
+const {
+  lang,
+  title,
+  description,
+  alternates,
+  accent = "ember",
+  heroTheme = "light",
+  footerTarget = false,
+  ogImage = "/assets/images/walo-07.jpg",
+  noindex = false,
+} = Astro.props;
+
+const site = Astro.site ?? new URL(Astro.url.origin);
+const canonical = new URL(alternates[lang], site).href;
+---
+
+<!doctype html>
+<html lang={lang} data-accent={accent} style={`--ball:var(--${accent})`}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    {noindex && <meta name="robots" content="noindex" />}
+    <link rel="canonical" href={canonical} />
+    <link rel="alternate" hreflang="es" href={new URL(alternates.es, site).href} />
+    <link rel="alternate" hreflang="en" href={new URL(alternates.en, site).href} />
+    <link rel="alternate" hreflang="x-default" href={new URL(alternates.es, site).href} />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={new URL(ogImage, site).href} />
+    <meta property="og:locale" content={lang === "es" ? "es_ES" : "en_GB"} />
+    <meta name="theme-color" content="#0B0B0C" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <script is:inline>
+      document.documentElement.classList.add("js");
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches)
+        document.documentElement.classList.add("js-motion-off");
+    </script>
+  </head>
+  <body>
+    <a class="skip" href="#main">{lang === "es" ? "Saltar al contenido" : "Skip to content"}</a>
+    <slot name="overlay" />
+    <Header lang={lang} alternates={alternates} theme={heroTheme} />
+    <main id="main">
+      <slot />
+    </main>
+    <Footer lang={lang} target={footerTarget} />
+  </body>
+</html>
+
+<script>
+  import "../scripts/site.ts";
+</script>

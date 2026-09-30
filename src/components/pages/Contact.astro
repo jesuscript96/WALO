@@ -1,0 +1,56 @@
+---
+/* CONTACTO · página nueva (ES /contacto · EN /en/contact) */
+import Base from "../../layouts/Base.astro";
+import ContactForm from "../ContactForm.astro";
+import { EMAIL, paths, t, type Lang } from "../../i18n";
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const s = t(lang);
+const c = s.contactPage;
+---
+
+<Base
+  lang={lang}
+  title={c.title}
+  description={c.description}
+  alternates={{ es: paths.contact("es"), en: paths.contact("en") }}
+  accent="ultra"
+  heroTheme="light"
+>
+  <section class="c-hero section" data-theme="light">
+    <span class="c-hero__o" aria-hidden="true"></span>
+    <p class="kicker">— {c.kicker}</p>
+    <h1 class="c-hero__title">
+      <span>{c.heading[0]}</span>
+      <span>{c.heading[1]}<span class="dot">.</span></span>
+    </h1>
+    <p class="c-hero__intro">{c.intro}</p>
+  </section>
+
+  <section class="section" data-theme="light" style="padding-top:clamp(40px,8vh,96px)">
+    <div class="c-grid">
+      <div class="c-details">
+        <div>
+          <span class="mono muted">{c.email}</span>
+          <p><a class="link-u" href={`mailto:${EMAIL}`}>{EMAIL}</a></p>
+        </div>
+        <div>
+          <span class="mono muted">{c.studio}</span>
+          <p set:html={c.studioText} />
+        </div>
+        <div>
+          <span class="mono muted">{c.follow}</span>
+          <!-- placeholders: enlazar perfiles reales -->
+          <p><a class="link-u" href="#">Instagram</a><br /><a class="link-u" href="#">LinkedIn</a></p>
+        </div>
+      </div>
+      <div>
+        <h2 class="c-form-title">{c.formTitle}<span class="dot">.</span></h2>
+        <ContactForm lang={lang} id="form-contact" />
+      </div>
+    </div>
+  </section>
+</Base>

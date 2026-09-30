@@ -1,0 +1,100 @@
+---
+/* Formulario de contacto (home, proyectos y /contacto).
+   Sin backend de correo todavía: si `endpoint` está vacío el envío se
+   simula y se muestra la confirmación. Para conectarlo (Formspree,
+   Resend, función de Vercel…) basta con pasar la URL en `endpoint`:
+   se hace POST JSON y cualquier respuesta no-2xx muestra el error.
+   Demo del estado de error: añadir ?form=error a la URL. */
+import { EMAIL, t, type Lang } from "../i18n";
+
+interface Props {
+  lang: Lang;
+  id: string;
+  endpoint?: string;
+}
+const { lang, id, endpoint = "" } = Astro.props;
+const f = t(lang).form;
+const messages = {
+  errors: f.errors,
+  sending: f.sending,
+  submit: f.submit,
+  successBody: f.successBody,
+};
+---
+
+<div class="form-wrap" data-form-wrap>
+  <form
+    class="lead-form"
+    id={id}
+    novalidate
+    data-lead-form
+    data-endpoint={endpoint}
+    data-messages={JSON.stringify(messages)}
+    aria-describedby={`${id}-summary`}
+  >
+    <div class="field" data-field="name">
+      <label for={`${id}-name`}>{f.name} <span aria-hidden="true">*</span></label>
+      <input id={`${id}-name`} name="name" type="text" autocomplete="name" placeholder={f.namePh} required aria-describedby={`${id}-name-err`} />
+      <p class="field__error" id={`${id}-name-err`}></p>
+    </div>
+
+    <div class="field-row">
+      <div class="field" data-field="email">
+        <label for={`${id}-email`}>{f.email}</label>
+        <input id={`${id}-email`} name="email" type="email" inputmode="email" autocomplete="email" placeholder={f.emailPh} aria-describedby={`${id}-hint ${id}-email-err`} />
+        <p class="field__error" id={`${id}-email-err`}></p>
+      </div>
+      <div class="field" data-field="phone">
+        <label for={`${id}-phone`}>{f.phone}</label>
+        <input id={`${id}-phone`} name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder={f.phonePh} aria-describedby={`${id}-hint ${id}-phone-err`} />
+        <p class="field__error" id={`${id}-phone-err`}></p>
+      </div>
+    </div>
+    <p class="form-hint" id={`${id}-hint`} data-hint>{f.hint}</p>
+
+    <div class="field" data-field="message">
+      <label for={`${id}-message`}>{f.message} <span class="field__opt">({f.optional})</span></label>
+      <textarea id={`${id}-message`} name="message" rows="3" placeholder={f.messagePh}></textarea>
+    </div>
+
+    <!-- Honeypot antispam (los humanos no lo ven) -->
+    <div class="hp" aria-hidden="true">
+      <label for={`${id}-company`}>Company</label>
+      <input id={`${id}-company`} name="company" type="text" tabindex="-1" autocomplete="off" />
+    </div>
+
+    <div>
+      <label class="consent" data-field="consent">
+        <input type="checkbox" name="consent" required aria-describedby={`${id}-consent-err`} />
+        <span>{f.consent}</span>
+      </label>
+      <p class="field__error" id={`${id}-consent-err`} style="margin-top:10px"></p>
+    </div>
+
+    <div class="form-alert" role="alert" data-alert hidden>
+      <span class="form-alert__icon" aria-hidden="true">!</span>
+      <p class="form-alert__title">{f.errorTitle}</p>
+      <p class="form-alert__text" set:html={f.errorBody.replace("{email}", `<a href="mailto:${EMAIL}">${EMAIL}</a>`)} />
+    </div>
+
+    <div class="form-actions">
+      <button class="btn" type="submit" data-submit>
+        <span class="btn__o" aria-hidden="true"></span><span data-submit-label>{f.submit}</span>
+      </button>
+      <p class="form-summary" id={`${id}-summary`} role="status" aria-live="polite"></p>
+    </div>
+  </form>
+
+  <div class="form-success" data-success hidden tabindex="-1" role="status" aria-live="polite">
+    <span class="form-success__o" aria-hidden="true"></span>
+    <p class="form-success__title">{f.successTitle}<span class="dot">.</span></p>
+    <p class="form-success__text" data-success-text></p>
+    <button class="btn btn--ghost" type="button" data-again>
+      <span class="btn__o" aria-hidden="true"></span>{f.again}
+    </button>
+  </div>
+</div>
+
+<script>
+  import "../scripts/form.ts";
+</script>

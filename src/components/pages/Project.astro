@@ -1,0 +1,182 @@
+---
+/* PROYECTO · plantilla común (ES/EN)
+   Estructura: hero + ficha → alcance / concepto / sistemas / resultado
+   → galería (lightbox) → FAQs → CTA → formulario → siguiente proyecto. */
+import Base from "../../layouts/Base.astro";
+import ContactForm from "../ContactForm.astro";
+import { paths, t, type Lang } from "../../i18n";
+import { nextProject, type Project } from "../../data/projects";
+
+interface Props {
+  lang: Lang;
+  project: Project;
+}
+const { lang, project: p } = Astro.props;
+const s = t(lang);
+const c = p[lang];
+const next = nextProject(p.slug);
+const blocks = [
+  { label: s.project.blocks.scope, text: c.scope },
+  { label: s.project.blocks.concept, text: c.concept },
+  { label: s.project.blocks.systems, text: c.systems },
+  { label: s.project.blocks.result, text: c.result },
+];
+const facts = [
+  { k: s.project.facts.type, v: c.type },
+  { k: s.project.facts.place, v: c.place },
+  { k: s.project.facts.year, v: String(p.year) },
+  { k: s.project.facts.area, v: p.area },
+  { k: s.project.facts.status, v: c.status },
+];
+const ctaImg = p.gallery[p.gallery.length - 1];
+---
+
+<Base
+  lang={lang}
+  title={`${c.name} — WALO`}
+  description={c.summary}
+  alternates={{ es: paths.project("es", p.slug), en: paths.project("en", p.slug) }}
+  accent={p.accent}
+  heroTheme="dark"
+  ogImage={p.hero.src}
+>
+  <!-- ============ HERO ============ -->
+  <section class="p-hero" data-theme="dark">
+    <div class="p-hero__media">
+      <img src={p.hero.src} alt="" fetchpriority="high" style={`object-position:${p.hero.pos ?? "50% 50%"}`} data-hero-img />
+    </div>
+    <div class="p-hero__inner">
+      <div>
+        <nav class="p-crumbs mono" aria-label="Breadcrumb">
+          <a href={paths.section(lang, "projects")}>{s.project.breadcrumb}</a>
+          <span aria-hidden="true">/</span>
+          <span>{p.num}</span>
+        </nav>
+        <h1 class="p-hero__title">{c.name}<span class="dot">.</span></h1>
+      </div>
+      <dl class="p-facts">
+        {
+          facts.map((f) => (
+            <div>
+              <dt class="mono">{f.k}</dt>
+              <dd>{f.v}</dd>
+            </div>
+          ))
+        }
+      </dl>
+    </div>
+  </section>
+
+  <!-- ============ FICHA ============ -->
+  <section class="section" data-theme="light">
+    <div class="p-intro">
+      <div class="p-intro__lead">
+        <span class="mono index">{p.num} — {c.type}</span>
+        <h2 class="p-intro__name">{c.name}<span class="dot">.</span></h2>
+        <p class="p-intro__summary">{c.summary}</p>
+      </div>
+      <div class="p-blocks">
+        {
+          blocks.map((b) => (
+            <div class="p-block reveal">
+              <span class="mono p-block__label">{b.label}</span>
+              <p>{b.text}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ GALERÍA ============ -->
+  <section class="section p-gallery" data-theme="dark">
+    <div class="section-head">
+      <span class="mono index">{s.project.gallery}</span>
+      <span class="mono muted">{c.name} · {c.place} · {p.year}</span>
+    </div>
+    <div class="p-gallery__grid" data-gallery>
+      {
+        p.gallery.map((g, i) => (
+          <button class="p-shot reveal" type="button" data-full={g.src} data-alt={g.alt[lang]} aria-label={`${s.project.openImage}: ${g.alt[lang]}`}>
+            <img src={g.src} alt={g.alt[lang]} loading="lazy" decoding="async" style={`object-position:${g.pos ?? "50% 50%"}`} />
+            <span class="p-shot__n mono" aria-hidden="true">
+              {String(i + 1).padStart(2, "0")} / {String(p.gallery.length).padStart(2, "0")}
+            </span>
+          </button>
+        ))
+      }
+    </div>
+    <dialog class="lightbox" aria-label={s.project.gallery} data-lightbox>
+      <div class="lightbox__bar">
+        <span class="mono" data-lb-count></span>
+        <button class="lb-btn" type="button" data-lb-close>{s.project.close} ✕</button>
+      </div>
+      <div class="lightbox__stage"><img src="" alt="" data-lb-img /></div>
+      <div class="lightbox__nav">
+        <button class="lb-btn" type="button" data-lb-prev>← {s.project.prev}</button>
+        <span class="mono lightbox__cap" data-lb-cap></span>
+        <button class="lb-btn" type="button" data-lb-next>{s.project.nextImg} →</button>
+      </div>
+    </dialog>
+  </section>
+
+  <!-- ============ FAQS ============ -->
+  <section class="section" data-theme="light">
+    <div class="p-faq">
+      <div>
+        <span class="mono index">FAQ</span>
+        <h2 class="p-faq__title" style="margin-top:18px">{s.project.faqs}<span class="dot">.</span></h2>
+      </div>
+      <div class="faq">
+        {
+          c.faqs.map((f, i) => (
+            <details open={i === 0}>
+              <summary>
+                <span>{f.q}</span>
+                <span class="faq__icon" aria-hidden="true" />
+              </summary>
+              <p class="faq__a">{f.a}</p>
+            </details>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CTA ============ -->
+  <section class="p-cta section" data-theme="dark">
+    <div class="p-cta__media"><img src={ctaImg.src} alt="" loading="lazy" /></div>
+    <div class="p-cta__inner">
+      <h2 class="p-cta__title reveal">{s.project.ctaTitle}</h2>
+      <p class="p-cta__text reveal">{s.project.ctaText}</p>
+      <a class="btn reveal" href={paths.contact(lang)}><span class="btn__o" aria-hidden="true"></span>{s.project.ctaButton}</a>
+    </div>
+  </section>
+
+  <!-- ============ FORMULARIO ============ -->
+  <section class="section" data-theme="dark" id={lang === "es" ? "contacto" : "contact"}>
+    <div class="contact-block">
+      <div>
+        <span class="mono index">{s.nav.contact}</span>
+        <h2 class="contact-block__title" style="margin-top:22px">{s.project.formTitle}<span class="dot">.</span></h2>
+        <p class="contact-block__text">{s.home.contactText}</p>
+      </div>
+      <ContactForm lang={lang} id={`form-${p.slug}`} />
+    </div>
+  </section>
+
+  <!-- ============ SIGUIENTE PROYECTO ============ -->
+  <a class="p-next section" data-theme="light" data-accent={next.accent} href={paths.project(lang, next.slug)}>
+    <div class="p-next__inner">
+      <div>
+        <span class="mono muted">{s.project.next} — {next.num}</span>
+        <p class="p-next__name">{next[lang].name}<span aria-hidden="true"> →</span></p>
+      </div>
+      <div class="p-next__thumb"><img src={next.hero.src} alt="" loading="lazy" style={`object-position:${next.hero.pos ?? "50% 50%"}`} /></div>
+    </div>
+  </a>
+</Base>
+
+<script>
+  import "../../scripts/project.ts";
+</script>

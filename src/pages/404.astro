@@ -1,0 +1,18 @@
+---
+import Base from "../layouts/Base.astro";
+import { paths, t } from "../i18n";
+const s = t("es").notFound;
+const e = t("en").notFound;
+---
+
+<Base lang="es" title={s.title} description={s.text} alternates={{ es: "/404", en: "/404" }} noindex>
+  <section class="nf section" data-theme="light">
+    <p class="kicker">404</p>
+    <h1 class="nf__title">{s.heading}<span class="dot">.</span></h1>
+    <p>{s.text} <span lang="en" class="muted">— {e.text}</span></p>
+    <div style="display:flex;gap:14px;flex-wrap:wrap">
+      <a class="btn" href={paths.home("es")}><span class="btn__o" aria-hidden="true"></span>{s.back}</a>
+      <a class="btn btn--ghost" href={paths.home("en")} lang="en"><span class="btn__o" aria-hidden="true"></span>{e.back}</a>
+    </div>
+  </section>
+</Base>

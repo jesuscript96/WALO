@@ -1,0 +1,99 @@
+---
+import { EMAIL, paths, t, type Lang } from "../i18n";
+import { projects } from "../data/projects";
+
+interface Props {
+  lang: Lang;
+  alternates: Record<Lang, string>;
+  theme: "light" | "dark";
+}
+const { lang, alternates, theme } = Astro.props;
+const s = t(lang).nav;
+const current = Astro.url.pathname.replace(/\/$/, "") || "/";
+const isContact = current === paths.contact(lang);
+const isProject = projects.some((p) => current === paths.project(lang, p.slug));
+---
+
+<header class="site-header" id="site-header" data-theme={theme}>
+  <a class="wordmark wordmark--sm" href={paths.home(lang)} aria-label={s.home}>
+    <span class="wm-letters">WAL</span><span class="wm-o" aria-hidden="true"></span>
+  </a>
+
+  <nav class="nav" aria-label={s.label}>
+    <div class="nav__drop" data-dropdown>
+      <button
+        class="nav__link"
+        type="button"
+        aria-expanded="false"
+        aria-controls="projects-menu"
+        aria-current={isProject ? "page" : undefined}
+      >
+        {s.projects}<span class="caret" aria-hidden="true"></span>
+      </button>
+      <div class="dropdown" id="projects-menu">
+        <ul>
+          {
+            projects.map((p) => {
+              const c = p[lang];
+              return (
+                <li data-accent={p.accent}>
+                  <a class="dropdown__item" href={paths.project(lang, p.slug)}>
+                    <img src={p.hero.src} alt="" width="56" height="56" loading="lazy" style={`object-position:${p.hero.pos ?? "50% 50%"}`} />
+                    <span>
+                      <span class="dropdown__name">{c.name}</span>
+                      <span class="dropdown__meta mono">{c.type} · {c.place}</span>
+                    </span>
+                    <span class="mono dropdown__num">{p.num}</span>
+                  </a>
+                </li>
+              );
+            })
+          }
+        </ul>
+        <a class="dropdown__all mono" href={paths.section(lang, "projects")}>
+          {s.allProjects}<span aria-hidden="true">→</span>
+        </a>
+      </div>
+    </div>
+    <a class="nav__link" href={paths.section(lang, "about")}>{s.about}</a>
+    <a class="nav__link" href={paths.contact(lang)} aria-current={isContact ? "page" : undefined}>{s.contact}</a>
+    <div class="lang mono" aria-label={s.langLabel}>
+      <a href={alternates.es} hreflang="es" lang="es" aria-current={lang === "es" ? "true" : undefined}>ES</a>
+      <span class="lang__sep" aria-hidden="true">/</span>
+      <a href={alternates.en} hreflang="en" lang="en" aria-current={lang === "en" ? "true" : undefined}>EN</a>
+    </div>
+  </nav>
+
+  <button class="burger nav__link" type="button" aria-expanded="false" aria-controls="mobile-menu" data-open-label={s.menu} data-close-label={s.close}>
+    <span class="burger__label">{s.menu}</span>
+    <span class="burger__lines" aria-hidden="true"></span>
+  </button>
+</header>
+
+<div class="mobile-menu" id="mobile-menu" inert>
+  <div>
+    <span class="mono" style="color:var(--on-dark-mut)">{s.projects}</span>
+    <div class="mobile-menu__projects">
+      {
+        projects.map((p) => (
+          <a href={paths.project(lang, p.slug)}>
+            <span>{p[lang].name}</span>
+            <span class="mono">{p.num}</span>
+          </a>
+        ))
+      }
+    </div>
+  </div>
+  <div>
+    <a class="mobile-menu__big" href={paths.section(lang, "about")}>{s.about}</a>
+    <a class="mobile-menu__big" href={paths.contact(lang)}>{s.contact}</a>
+  </div>
+  <div class="mobile-menu__foot">
+    <a class="mono" href={`mailto:${EMAIL}`}>{EMAIL}</a>
+    <div class="lang mono" aria-label={s.langLabel}>
+      <a href={alternates.es} hreflang="es" lang="es" aria-current={lang === "es" ? "true" : undefined}>ES</a>
+      <span class="lang__sep" aria-hidden="true">/</span>
+      <a href={alternates.en} hreflang="en" lang="en" aria-current={lang === "en" ? "true" : undefined}>EN</a>
+    </div>
+  </div>
+</div>
